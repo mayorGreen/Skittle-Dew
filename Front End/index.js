@@ -1,4 +1,3 @@
-// this doesn't work rn, so I probably didn't install some things correctly to have this run locally for testing
 const express = require("express");
 require("dotenv").config();
 
