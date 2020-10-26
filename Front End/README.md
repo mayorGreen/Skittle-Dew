@@ -4,4 +4,4 @@ This exists mostly for sorting things, and we'll rearrange folders for functiona
 
 The github built in percentages seem to be ignoring how much javascript is embedded in my HTML, which is a bit annoying, but oh well.
 
-Lots of this javascript may have to be rewritten to query the database, or rewritten in php, but right now we're treating it as a proof of concept.
+Some of this js might have to be rewritten in php, but as I go I'm trying to include a commented out version of what a database backend implementaiton would look like. The active version of most of this code will be filled with placeholder values.

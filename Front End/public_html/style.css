@@ -22,7 +22,7 @@ h1 {
     background-color: #ddd;
 }        
 
-.tab button.active {            
+.tab button:active {            
     background-color: #ccc;
 }        
 
