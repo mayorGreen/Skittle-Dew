@@ -54,8 +54,8 @@
                    ven.appendChild(element);
                }
             }
-            
-            function getItems(){
+
+            function getItems(){ // UNFINISHED SCRIPT TODO:
                 var itemDiv = document.getElementById("itemDiv");
                 itemDiv.innerHTML = '';
 
@@ -82,7 +82,7 @@
                     n.value = itemName;
                     select.appendChild(n);
                 }
-                select.onchange = "newItems()"
+                select.onchange = "newItems()" // newItems function doesn't exist
 
                 var quantity = document.createElement("input");
                 quantity.type = "number";
@@ -102,6 +102,113 @@
 
                 itemDiv.style.visibility = "visible";
             }
+
+            function validatePhone(phoneNo){
+                var noDash = /^\d{10}$/;
+                var dashDotOrSpace = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+                if((phoneNo.match(noDash)) || (phoneNo.match(dashDotOrSpace))) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            function validateZip(zip){
+                var vZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
+                if (zip.match(vZip)){
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            function newVendor(vName, vMail, vPhone, vAddress, vCity, vState, vZip){
+                var warn = document.getElementById("avWarn");
+                warn.style.visibility = "hidden";
+
+                validEmailSuffixes = [".com", ".net", ".gov", ".edu"]; // add more as nessesary
+
+                // update these to match exact submission criteria to prevent bad data entry
+                // validate name field length
+                if (vName.value.length <= 1) {
+                    warn.textContent = "Vendor Name is too short!";
+                    warn.style.visibility = "visible";
+                    return false;
+                }
+
+                if (vName.value.length >= 255) {
+                    warn.textContent = "Vendor Name is too long!";
+                    warn.style.visibility = "visible";
+                    return false;
+                }
+
+                // validate Email Address ending
+                vMailSuffix = vMail.value.substr(vMail.value.length - 4);
+                for (var i = 0; i < validEmailSuffixes.length; i++){
+                    if (vMailSuffix == validEmailSuffixes[i]){
+                        break
+                    }
+                }
+                if (i == validEmailSuffixes.length) {
+                    warn.textContent = "Invalid Email Address!";
+                    warn.style.visibility = "visible";
+                    return false;
+                }
+
+                // validate @ symbol present in email
+                for (var i = 0; i < vMail.value.length; i++){
+                    if (vMail.value[i] == '@'){
+                        break
+                    }
+                }
+                if (i == vMail.value.length) {
+                    warn.textContent = "Invalid Email Address!";
+                    warn.style.visibility = "visible";
+                    return false;
+                }
+
+                // validate phone number
+                phoneValid = validatePhone(vPhone.value);
+                if (phoneValid == false) {
+                    warn.textContent = "Invalid Phone Number!";
+                    warn.style.visibility = "visible";
+                    return false;
+                }
+
+                // validate address
+                // TODO: validate address field
+
+                // validate city
+                if (vCity.value.length <= 1) {
+                    warn.textContent = "City Name is too short!";
+                    warn.style.visibility = "visible";
+                    return false;
+                }
+
+                if (vCity.value.length >= 255) {
+                    warn.textContent = "City Name is too long!";
+                    warn.style.visibility = "visible";
+                    return false;
+                }
+
+                // validate state
+                if (vState.value.length != 2) {
+                    warn.textContent = "Invalid State!";
+                    warn.style.visibility = "visible";
+                    return false;
+                }
+                
+                // validate Zip Code
+                var validZip = validateZip(vZip.value);
+                if (validZip == false) {
+                    warn.textContent = "Invalid Zip Code!";
+                    warn.style.visibility = "visible";
+                    return false;
+                }
+
+                console.log("All tests were succesful!");
+                console.log("This is usually where I'd push things to the database, but you know");
+            }
         </script>
     </head>
     <body>
@@ -110,6 +217,7 @@
         <div class="tab">
             <button class="tablinks" onclick="openTab(event, 'addOrder')" id="default">Add Order</button>
             <button class="tablinks" onclick="openTab(event, 'editOrder')">Edit Order</button>
+            <button class="tablinks" onclick="openTab(event, 'createVendor')">Add Vendor</button>
             <button class="tablinks" onclick="openTab(event, 'createReports')">Create Reports</button>
         </div>
 
@@ -131,6 +239,31 @@
         </div>
         <div id="editOrder" class="tabcontent">
             <h2>Edit Existing Order</h2>
+        </div>
+        <div id="createVendor" class="tabcontent">
+            <h2>Add New Vendor</h2>
+            <!--Should functionally add a new vendor to the vendor table-->
+            <label for="vendName">Vendor Name: </label>
+            <input id="vendName" type="text" name="vname">
+            <br>
+            <label for="vendEmail">Email Address: </label>
+            <input id="vendEmail" type="text" name="vmail">
+            <br>
+            <label for="vendPhone">Phone Number: </label>
+            <input id="vendPhone" type="text" name="vphone">
+            <br>
+            <label for="vendAddress">Address: </label>
+            <input id="vendAddress" type="text" name="vaddress">
+            <br>
+            <label for="vendCity">City: </label>
+            <input id="vendCity" type="text" name="vcity">
+            <label for="vendState">State: </label>
+            <input id="vendState" type="text" name="vstate">
+            <label for="vendZip">Zip Code: </label>
+            <input id="vendZip" type="text" name="vzip">
+            <br>
+            <input type="button" value="Create" onClick="newVendor(vendName, vendEmail, vendPhone, vendAddress, vendCity, vendState, vendZip)">
+            <p id="avWarn" style="color: red; visibility: hidden"></p>
         </div>
         <div id="createReports" class="tabcontent">
             <h2>Generate Reports</h2>
