@@ -4,7 +4,7 @@ var app = express();
 
 // This bit of code should start a webserver at http://localhost:5000 so that you can check to see that the information written to the database has actually be written.
 // Optionally you can use the SELECT SQL statement in the MSSMS to ensure that the data has been written to the table
-app.get('/', function (req, res)
+app.get('/', function (req,res)
 {
     var sql = require("mssql");
 

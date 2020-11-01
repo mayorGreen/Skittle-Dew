@@ -1,8 +1,10 @@
 <html lang="en">
+
     <head>
         <meta charset="UTF-8">
         <title>PO System</title>
         <link rel="stylesheet" href="style.css">
+
         <script>
             function openTab(event, tabName){
                 var i, tabcontent, tablinks;
@@ -122,7 +124,7 @@
                 }
             }
 
-            function newVendor(vName, vMail, vPhone, vAddress, vCity, vState, vZip){
+            /* function newVendor(vName, vMail, vPhone, vAddress, vCity, vState, vZip){
                 var warn = document.getElementById("avWarn");
                 warn.style.visibility = "hidden";
 
@@ -208,7 +210,9 @@
 
                 console.log("All tests were succesful!");
                 console.log("This is usually where I'd push things to the database, but you know");
-            }
+
+             */
+
         </script>
     </head>
     <body>
@@ -240,9 +244,13 @@
         <div id="editOrder" class="tabcontent">
             <h2>Edit Existing Order</h2>
         </div>
-        <div id="createVendor" class="tabcontent">
+
+        <div
+            id="createVendor" class="tabcontent">
             <h2>Add New Vendor</h2>
             <!--Should functionally add a new vendor to the vendor table-->
+
+            <form method = "post" action = "addVendor.php">
             <label for="vendName">Vendor Name: </label>
             <input id="vendName" type="text" name="vname">
             <br>
@@ -262,8 +270,9 @@
             <label for="vendZip">Zip Code: </label>
             <input id="vendZip" type="text" name="vzip">
             <br>
-            <input type="button" value="Create" onClick="newVendor(vendName, vendEmail, vendPhone, vendAddress, vendCity, vendState, vendZip)">
-            <p id="avWarn" style="color: red; visibility: hidden"></p>
+            <input type="submit" name="submit" value="Submit">
+            <p id="avWarn" style="color: #ff0000; visibility: hidden"></p>
+            </form>
         </div>
         <div id="createReports" class="tabcontent">
             <h2>Generate Reports</h2>
