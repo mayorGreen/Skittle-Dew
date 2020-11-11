@@ -1,3 +1,4 @@
+// this needs to go at some point, and just use the inital webserver instead
 const express = require("express");
 require("dotenv").config();
 
