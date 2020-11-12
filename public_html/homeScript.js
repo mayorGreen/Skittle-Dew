@@ -200,5 +200,6 @@ function newVendor(vName, vMail, vPhone, vAddress, vCity, vState, vZip) {
 
     console.log("All tests were succesful!");
     console.log("This is usually where I'd push things to the database, but you know");
+    console.log(vName.value, vMail.value, vPhone.value, vAddress.value, vCity.value, vState.value, vZip.value); // branch specific line
     return true;
 }
