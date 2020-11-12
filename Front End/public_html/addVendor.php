@@ -1,5 +1,5 @@
 <?php
-echo('<script type="text/javascript">alert("Vendor successfully created!");location="http://localhost/Buch_County/index.html";</script>');
+echo('<script type="text/javascript">alert("Vendor successfully created!");location="https://webservices.missouriwestern.edu/users/radams10/index.html";</script>');
 if(isset($_POST['submit']))
 {
 

@@ -40,8 +40,7 @@
             id="createVendor" class="tabcontent">
             <h2>Add New Vendor</h2>
             <!--Should functionally add a new vendor to the vendor table-->
-
-            <form method = "post" action = "addVendor.php" onsubmit="return index.html">
+            <form method = "post" action = "addVendor.php" onsubmit="return newVendor(vname, vmail, vphone, vaddress, vcity, vstate, vzip)">
             <label for="vendName">Vendor Name: </label>
             <input id="vendName" type="text" name="vname">
             <br>
@@ -61,7 +60,7 @@
             <label for="vendZip">Zip Code: </label>
             <input id="vendZip" type="text" name="vzip">
             <br>
-            <input type="submit" name="submit" value="Submit"> <!--This isn't working properly for me rn, I need to setup the environment you have and try it again-->
+            <input type="submit" name="submit" value="Submit">
             <p id="avWarn" style="color: #ff0000; visibility: hidden"></p>
             </form>
         </div>
