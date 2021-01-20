@@ -19,11 +19,11 @@ function openTab(event, tabName) {
     event.currentTarget.className += "active";
 
     if (tabName == "addOrder") {
-        getVendors();
+        getVendors(sessionStorage.getItem("savedVendor"));
     }
 }
 
-function getVendors() {
+function getVendors(setTo = null) {
     var ven = document.getElementById("vendSelect");
     ven.innerHTML = '';
     var x = document.createElement("option");
@@ -49,9 +49,15 @@ function getVendors() {
         element.value = ID;
         ven.appendChild(element);
     }
+    if (setTo != null) {
+        ven.value = setTo;
+    }
 }
 
 function onVSelect() {
+    var vendor = document.getElementById("vendSelect");
+    sessionStorage.setItem("savedVendor", vendor.value);
+
     var itemDiv = document.getElementById("itemDiv");
     itemDiv.innerHTML = '';
 
@@ -63,8 +69,46 @@ function onVSelect() {
 }
 
 function getItems() {
-    var itemDiv = document.getElementById("itemDiv");
+    function newItems(called = false) { // for add item button
+        if (called == true) {
+            console.log("newItems() called");
+            newDiv = document.createElement("div");
+            var conNum = document.createElement("input");
+            conNum.type = "text";
+            conNum.placeholder = "Contract Number";
 
+            var desc = document.createElement("input");
+            desc.type = "text";
+            desc.placeholder = "Item Description";
+
+            var quantity = document.createElement("input");
+            quantity.id = "quantity";
+            quantity.type = "number";
+            quantity.step = "1";
+            quantity.value = "1";
+            quantity.min = "1";
+            quantity.placeholder = "Quantity";
+
+            var price = document.createElement("input");
+            price.id = "price";
+            price.type = "number";
+            price.min = "0.01";
+            price.step = "any";
+            price.placeholder = "Price";
+
+            newDiv.appendChild(conNum);
+            newDiv.appendChild(desc);
+            newDiv.appendChild(quantity);
+            newDiv.appendChild(price);
+            
+            newDiv.appendChild(document.createElement("br"));
+
+            itemDiv.append(newDiv);
+            //itemDiv.style.visibility = "visible";
+        }
+    }
+
+    var itemDiv = document.getElementById("itemDiv");
     var liDiv = document.createElement("div");
 
     var conNum = document.createElement("input");
@@ -87,52 +131,32 @@ function getItems() {
     price.id = "price";
     price.type = "number";
     price.min = "0.01";
+    price.step = "any";
     price.placeholder = "Price";
 
     liDiv.appendChild(conNum);
     liDiv.appendChild(desc);
     liDiv.appendChild(quantity);
     liDiv.appendChild(price);
+    
+    liDiv.appendChild(document.createElement("br"));
+    itemDiv.append(liDiv);
 
-    itemDiv.appendChild(liDiv);
-
-    /*var select = document.createElement("select");
-    var x = document.createElement("option");
-    x.textContent = " ";
-    select.appendChild(x);
-    for (i = 0; i < dict[vID].length; i++) {
-        var itemName = dict[vID][i];
-        var n = document.createElement("option");
-        n.textContent = itemName;
-        n.value = itemName;
-        select.appendChild(n);
-    }
-
-    var quantity = document.createElement("input");
-    quantity.id = "quantity";
-    quantity.type = "number";
-    quantity.step = "1";
-    quantity.value = "1";
-    quantity.min = "1";
-
-    var br = document.createElement("br");
-
+    var buttonsDiv = document.getElementById("buttonsDiv");
+    
     var addItemButton = document.createElement("button");
     addItemButton.type = "button";
     addItemButton.textContent = "Click to add new item";
-    addItemButton.onclick = "newItems()";
+    addItemButton.onclick = function() {newItems(true)};
 
-    var button = document.createElement("button");
-    button.type = "button";
-    button.textContent = "Finalize Item Selection";
+    var finalizeButton = document.createElement("button");
+    finalizeButton.type = "button";
+    finalizeButton.textContent = "Finalize Item Selection";
 
-    itemDiv.appendChild(select);
-    itemDiv.appendChild(quantity);
-    itemDiv.appendChild(br);
-    itemDiv.appendChild(addItemButton);
-    itemDiv.appendChild(button);
+    buttonsDiv.append(addItemButton);
+    buttonsDiv.append(finalizeButton);
 
-    itemDiv.style.visibility = "visible";*/
+    buttonsDiv.visibility = "visible";
 }
 
 
@@ -145,6 +169,12 @@ function validatePhone(phoneNo) {
         return false;
     }
 }
+
+function validateState(state) {
+    // TODO: fill in
+    return 0
+}
+
 function validateZip(zip) {
     var vZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
     if (zip.match(vZip)) {
