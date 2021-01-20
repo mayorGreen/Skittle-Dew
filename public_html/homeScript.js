@@ -1,4 +1,4 @@
-// Copyright (C) Skittle-Dew 2020
+// Copyright (C) Skittle-Dew 2020. All Rights Reserved.
 // Handles all index.html javascript
 function openTab(event, tabName) {
     var i, tabcontent, tablinks;
@@ -19,10 +19,11 @@ function openTab(event, tabName) {
     event.currentTarget.className += "active";
 
     if (tabName == "addOrder") {
-        getVendors();
+        getVendors(sessionStorage.getItem("savedVendor"));
     }
 }
-function getVendors() {
+
+function getVendors(setTo = null) {
     var ven = document.getElementById("vendSelect");
     ven.innerHTML = '';
     var x = document.createElement("option");
@@ -48,24 +49,116 @@ function getVendors() {
         element.value = ID;
         ven.appendChild(element);
     }
+    if (setTo != null) {
+        ven.value = setTo;
+    }
 }
-function getItems() {
+
+function onVSelect() {
+    var vendor = document.getElementById("vendSelect");
+    sessionStorage.setItem("savedVendor", vendor.value);
+
     var itemDiv = document.getElementById("itemDiv");
     itemDiv.innerHTML = '';
 
-    var vendor = document.getElementById("vendSelect");
-    var vID = vendor.value;
+    var header = document.createElement("h3");
+    header.textContent = "Items: ";
+    
+    itemDiv.appendChild(header);
+    getItems();
+}
 
-    // From here, this is where we'd use the vID to find the item table to pull it
-    // However for now I'll be using placeholder values
-    var dict = {
-        1: ["TPS Report", "Computer Chip"],
-        2: ["Falconghini", "Vapid"],
-        3: ["Portal Gun", "Gravity Gun"]
-    };
+function getItems() {
+    function newItems(called = false) { // for add item button
+        if (called == true) {
+            console.log("newItems() called");
+            newDiv = document.createElement("div");
+            var conNum = document.createElement("input");
+            conNum.type = "text";
+            conNum.placeholder = "Contract Number";
 
+            var desc = document.createElement("input");
+            desc.type = "text";
+            desc.placeholder = "Item Description";
 
-    var select = document.createElement("select");
+            var quantity = document.createElement("input");
+            quantity.id = "quantity";
+            quantity.type = "number";
+            quantity.step = "1";
+            quantity.value = "1";
+            quantity.min = "1";
+            quantity.placeholder = "Quantity";
+
+            var price = document.createElement("input");
+            price.id = "price";
+            price.type = "number";
+            price.min = "0.01";
+            price.step = "any";
+            price.placeholder = "Price";
+
+            newDiv.appendChild(conNum);
+            newDiv.appendChild(desc);
+            newDiv.appendChild(quantity);
+            newDiv.appendChild(price);
+            
+            newDiv.appendChild(document.createElement("br"));
+
+            itemDiv.append(newDiv);
+            //itemDiv.style.visibility = "visible";
+        }
+    }
+
+    var itemDiv = document.getElementById("itemDiv");
+    var liDiv = document.createElement("div");
+
+    var conNum = document.createElement("input");
+    conNum.type = "text";
+    conNum.placeholder = "Contract Number";
+
+    var desc = document.createElement("input");
+    desc.type = "text";
+    desc.placeholder = "Item Description";
+
+    var quantity = document.createElement("input");
+    quantity.id = "quantity";
+    quantity.type = "number";
+    quantity.step = "1";
+    quantity.value = "1";
+    quantity.min = "1";
+    quantity.placeholder = "Quantity";
+
+    var price = document.createElement("input");
+    price.id = "price";
+    price.type = "number";
+    price.min = "0.01";
+    price.step = "any";
+    price.placeholder = "Price";
+
+    liDiv.appendChild(conNum);
+    liDiv.appendChild(desc);
+    liDiv.appendChild(quantity);
+    liDiv.appendChild(price);
+    
+    liDiv.appendChild(document.createElement("br"));
+    itemDiv.append(liDiv);
+
+    var buttonsDiv = document.getElementById("buttonsDiv");
+    
+    var addItemButton = document.createElement("button");
+    addItemButton.type = "button";
+    addItemButton.textContent = "Click to add new item";
+    addItemButton.onclick = function() {newItems(true)};
+
+    var finalizeButton = document.createElement("button");
+    finalizeButton.type = "button";
+    finalizeButton.textContent = "Finalize Item Selection";
+
+    buttonsDiv.append(addItemButton);
+    buttonsDiv.append(finalizeButton);
+
+    buttonsDiv.visibility = "visible";
+
+    /*var select = document.createElement("select");
     var x = document.createElement("option");
     x.textContent = " ";
     select.appendChild(x);
@@ -76,14 +169,20 @@ function getItems() {
         n.value = itemName;
         select.appendChild(n);
     }
-    select.onchange = "newItems()"; // newItems function doesn't exist
 
     var quantity = document.createElement("input");
+    quantity.id = "quantity";
     quantity.type = "number";
     quantity.step = "1";
     quantity.value = "1";
+    quantity.min = "1";
 
     var br = document.createElement("br");
+
+    var addItemButton = document.createElement("button");
+    addItemButton.type = "button";
+    addItemButton.textContent = "Click to add new item";
+    addItemButton.onclick = "newItems()";
 
     var button = document.createElement("button");
     button.type = "button";
@@ -92,10 +191,13 @@ function getItems() {
     itemDiv.appendChild(select);
     itemDiv.appendChild(quantity);
     itemDiv.appendChild(br);
+    itemDiv.appendChild(addItemButton);
     itemDiv.appendChild(button);
 
-    itemDiv.style.visibility = "visible";
+    itemDiv.style.visibility = "visible";*/
 }
+
+
 function validatePhone(phoneNo) {
     var noDash = /^\d{10}$/;
     var dashDotOrSpace = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
@@ -105,6 +207,12 @@ function validatePhone(phoneNo) {
         return false;
     }
 }
+
+function validateState(state) {
+    // TODO: fill in
+    return 0
+}
+
 function validateZip(zip) {
     var vZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
     if (zip.match(vZip)) {
@@ -199,7 +307,6 @@ function newVendor(vName, vMail, vPhone, vAddress, vCity, vState, vZip) {
     }
 
     console.log("All tests were succesful!");
-    console.log("This is usually where I'd push things to the database, but you know");
     console.log(vName.value, vMail.value, vPhone.value, vAddress.value, vCity.value, vState.value, vZip.value); // branch specific line
     return true;
 }
