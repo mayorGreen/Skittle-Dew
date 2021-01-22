@@ -15,7 +15,7 @@ function openTab(event, tabName) {
     }
 
     // Display current tab
-    document.getElementsById(tabName).style.display = "block";
+    document.getElementById(tabName).style.display = "block";
     event.currentTarget.className += "active";
 
     if (tabName == "addOrder") {
@@ -24,17 +24,54 @@ function openTab(event, tabName) {
 }
 
 function getVendors(setTo = null) {
-    $.ajax({
-        url:"getter.php",
-        type: "post",
-        datatype: 'json',
-        success: function (response)
-    });
     var ven = document.getElementById("vendSelect");
     ven.innerHTML = '';
     var x = document.createElement("option");
     x.textContent = " ";
     ven.appendChild(x);
+
+    var vendors = [];
+    
+    function returnAjax(url, callbackFunc, called = false) {
+        if (called == true) {
+            httpRequest = new XMLHttpRequest();
+            httpRequest.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) { // correct codes
+                    // process server response
+                    console.log(this);
+                    console.log(this.responseText);
+                    try {
+                        var data = JSON.parse(httpRequest.responseText);
+                    } catch(err) {
+                        console.log(err.message + " in " + httpRequest.responseText);
+                        return;
+                    }
+                    callbackFunc(data);
+                }
+            };
+            httpRequest.open("POST", url, true);
+            httpRequest.send();
+        }
+    }
+
+    returnAjax('getter.php', function(data) {
+        /* should show json file detailing all the data it pulled. 
+        I might not have the database setup correctly, but everything
+        seems fine about my implementation so far, i dunno
+        it's really late and I was already very tired when I started
+        working on this. So I'll look at it tomorrow. But without the
+        database setup correctly, I doubt that there's anything I can do. */
+        console.log(data); // TODO: Test this on a PC with the database working
+    }, true);
+
+    
+    /* $.ajax({
+        url:"getter.php",
+        type: "post",
+        datatype: 'json',
+        success: function (response)
+    }); */
+    
     // TODO: Insert Database functionality, replace this demo
     /*
     // THIS IS PSEUDOCODE, PLEASE REVIEW IT BEFORE YOU UNCOMMENT THIS AND CALL IT A DAY. It should go something like this though, if I know what I'm doing.
@@ -77,7 +114,6 @@ function onVSelect() {
 function getItems() {
     function newItems(called = false) { // for add item button
         if (called == true) {
-            console.log("newItems() called");
             newDiv = document.createElement("div");
             var conNum = document.createElement("input");
             conNum.type = "text";
@@ -149,20 +185,22 @@ function getItems() {
     itemDiv.append(liDiv);
 
     var buttonsDiv = document.getElementById("buttonsDiv");
-    
-    var addItemButton = document.createElement("button");
-    addItemButton.type = "button";
-    addItemButton.textContent = "Click to add new item";
-    addItemButton.onclick = function() {newItems(true)};
 
-    var finalizeButton = document.createElement("button");
-    finalizeButton.type = "button";
-    finalizeButton.textContent = "Finalize Item Selection";
+    if (buttonsDiv.visibility != "visible") {
+        var addItemButton = document.createElement("button");
+        addItemButton.type = "button";
+        addItemButton.textContent = "Click to add new item";
+        addItemButton.onclick = function() {newItems(true)};
 
-    buttonsDiv.append(addItemButton);
-    buttonsDiv.append(finalizeButton);
+        var finalizeButton = document.createElement("button");
+        finalizeButton.type = "button";
+        finalizeButton.textContent = "Finalize Item Selection";
 
-    buttonsDiv.visibility = "visible";
+        buttonsDiv.append(addItemButton);
+        buttonsDiv.append(finalizeButton);
+
+        buttonsDiv.visibility = "visible";
+    }
 }
 
 
