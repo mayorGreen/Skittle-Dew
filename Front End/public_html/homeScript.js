@@ -15,7 +15,7 @@ function openTab(event, tabName) {
     }
 
     // Display current tab
-    document.getElementById(tabName).style.display = "block";
+    document.getElementsById(tabName).style.display = "block";
     event.currentTarget.className += "active";
 
     if (tabName == "addOrder") {
@@ -24,6 +24,12 @@ function openTab(event, tabName) {
 }
 
 function getVendors(setTo = null) {
+    $.ajax({
+        url:"getter.php",
+        type: "post",
+        datatype: 'json',
+        success: function (response)
+    });
     var ven = document.getElementById("vendSelect");
     ven.innerHTML = '';
     var x = document.createElement("option");
