@@ -11,9 +11,9 @@
         <h1>Buchanan County Purchase Orders</h1>
         <p>I want to...</p>
         <div class="tab">
-            <button class="tablinks" onclick="openTab(event, 'addOrder')" id="default">Add Order</button>
+            <button class="tablinks" onclick="openTab(event, 'addOrder')" >Add Order</button>
             <button class="tablinks" onclick="openTab(event, 'editOrder')">Edit Order</button>
-            <button class="tablinks" onclick="openTab(event, 'createVendor')">Add Vendor</button>
+            <button class="tablinks" onclick="openTab(event, 'createVendor')" id="default">Add Vendor</button>
             <button class="tablinks" onclick="openTab(event, 'createReports')">Create Reports</button>
         </div>
 
@@ -40,12 +40,15 @@
             id="createVendor" class="tabcontent">
             <h2>Add New Vendor</h2>
             <!--Should functionally add a new vendor to the vendor table-->
-            <form method = "post" action = "addVendor.php" onsubmit="return newVendor(vname, vmail, vphone, vaddress, vcity, vstate, vzip)">
+            <script type="text/javascript">
+                window.addEventListener('keydown',function(e){if(e.keyIdentifier=='U+000A'||e.keyIdentifier=='Enter'||e.keyCode==13){if(e.target.nodeName=='INPUT'&&e.target.type=='text'){e.preventDefault();return false;}}},true);
+            </script>                
+            <form id = "vCreate" method = "POST" action = "addVendor.php" onsubmit="return newVendor(vname, vmail, vphone, vaddress, vcity, vstate, vzip)">
             <label for="vendName">Vendor Name: </label>
             <input id="vendName" type="text" name="vname">
             <br>
             <label for="vendEmail">Email Address: </label>
-            <input id="vendEmail" type="text" name="vmail">
+            <input id="vendEmail" type="text" name="vmail"> <!--Could've made this type="email" but now that we have custom validation rules we kinda have to roll with it-->
             <br>
             <label for="vendPhone">Phone Number: </label>
             <input id="vendPhone" type="text" name="vphone">
@@ -56,7 +59,60 @@
             <label for="vendCity">City: </label>
             <input id="vendCity" type="text" name="vcity">
             <label for="vendState">State: </label>
-            <input id="vendState" type="text" name="vstate">
+            <select from="vCreate" id="vendState" name="vstate">
+                <option value="NIL" selected = "selected"> </option>
+                <option value="AL">AL</option>
+                <option value="AK">AK</option>
+                <option value="AR">AR</option>	
+                <option value="AZ">AZ</option>
+                <option value="CA">CA</option>
+                <option value="CO">CO</option>
+                <option value="CT">CT</option>
+                <option value="DC">DC</option>
+                <option value="DE">DE</option>
+                <option value="FL">FL</option>
+                <option value="GA">GA</option>
+                <option value="HI">HI</option>
+                <option value="IA">IA</option>	
+                <option value="ID">ID</option>
+                <option value="IL">IL</option>
+                <option value="IN">IN</option>
+                <option value="KS">KS</option>
+                <option value="KY">KY</option>
+                <option value="LA">LA</option>
+                <option value="MA">MA</option>
+                <option value="MD">MD</option>
+                <option value="ME">ME</option>
+                <option value="MI">MI</option>
+                <option value="MN">MN</option>
+                <option value="MO">MO</option>	
+                <option value="MS">MS</option>
+                <option value="MT">MT</option>
+                <option value="NC">NC</option>	
+                <option value="NE">NE</option>
+                <option value="NH">NH</option>
+                <option value="NJ">NJ</option>
+                <option value="NM">NM</option>			
+                <option value="NV">NV</option>
+                <option value="NY">NY</option>
+                <option value="ND">ND</option>
+                <option value="OH">OH</option>
+                <option value="OK">OK</option>
+                <option value="OR">OR</option>
+                <option value="PA">PA</option>
+                <option value="RI">RI</option>
+                <option value="SC">SC</option>
+                <option value="SD">SD</option>
+                <option value="TN">TN</option>
+                <option value="TX">TX</option>
+                <option value="UT">UT</option>
+                <option value="VT">VT</option>
+                <option value="VA">VA</option>
+                <option value="WA">WA</option>
+                <option value="WI">WI</option>	
+                <option value="WV">WV</option>
+                <option value="WY">WY</option>
+            </select>	
             <label for="vendZip">Zip Code: </label>
             <input id="vendZip" type="text" name="vzip">
             <br>

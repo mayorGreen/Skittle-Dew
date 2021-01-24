@@ -214,11 +214,6 @@ function validatePhone(phoneNo) {
     }
 }
 
-function validateState(state) {
-    // TODO: fill in
-    return 0
-}
-
 function validateZip(zip) {
     var vZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
     if (zip.match(vZip)) {
@@ -282,7 +277,11 @@ function newVendor(vName, vMail, vPhone, vAddress, vCity, vState, vZip) {
     }
 
     // validate address
-    // TODO: validate address field
+    if (vAddress.value.length < 1) {
+        warn.textContent = "Address Field is required!";
+        warn.style.visibility = "visible";
+        return false;
+    }
 
     // validate city
     if (vCity.value.length <= 1) {
@@ -298,8 +297,8 @@ function newVendor(vName, vMail, vPhone, vAddress, vCity, vState, vZip) {
     }
 
     // validate state
-    if (vState.value.length != 2) {
-        warn.textContent = "Invalid State!";
+    if (vState.value == "NIL") {
+        warn.textContent = "You must choose a State!";
         warn.style.visibility = "visible";
         return false;
     }
@@ -313,5 +312,6 @@ function newVendor(vName, vMail, vPhone, vAddress, vCity, vState, vZip) {
     }
 
     console.log("All tests were succesful!");
+    console.log(vName.value, vMail.value, vPhone.value, vAddress.value, vCity.value, vState.value, vZip.value);
     return true;
 }
