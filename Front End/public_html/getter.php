@@ -22,8 +22,9 @@
 
     while($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
     {
-        echo json_encode($row['Vendor_ID']);
-        echo json_encode($row['Vendor_Name']);
+        //echo json_encode($row['Vendor_ID']);
+        //echo json_encode($row['Vendor_Name']);
+        echo json_encode($row['Vendor_ID'].' '.$row['Vendor_Name']);
 
     }
 
