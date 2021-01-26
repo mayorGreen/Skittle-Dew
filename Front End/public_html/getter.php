@@ -10,7 +10,7 @@
         die(print_r(sqlsrv_errors(), true));
     }
 
-    $sql = "SELECT Vendor_Name FROM Vendor_Table";
+    $sql = "SELECT Vendor_ID, Vendor_Name FROM Vendor_Table";
 
     $stmt = sqlsrv_query($conn, $sql);
 
@@ -22,7 +22,9 @@
 
     while($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
     {
+        echo json_encode($row['Vendor_ID']);
         echo json_encode($row['Vendor_Name']);
+
     }
 
     sqlsrv_free_stmt($stmt);
