@@ -32,8 +32,8 @@ function getVendors(setTo = null) {
 
     var vendors = [];
     
-    function returnAjax(url, callbackFunc, called = false) {
-        if (called == true) {
+    function returnAjax(url, callbackFunc) {
+        if (true) {
             httpRequest = new XMLHttpRequest();
             httpRequest.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) { // correct codes
@@ -49,13 +49,13 @@ function getVendors(setTo = null) {
                     callbackFunc(data);
                 }
             };
-            httpRequest.open("POST", url, true);
+            httpRequest.open("GET", url, true);
             httpRequest.send();
         }
     }
 
     returnAjax('getter.php', function(data) {
-        /* should show json file detailing all the data it pulled. 
+        /* should show json file detailing all the data it pulled.
         I might not have the database setup correctly, but everything
         seems fine about my implementation so far, i dunno
         it's really late and I was already very tired when I started
