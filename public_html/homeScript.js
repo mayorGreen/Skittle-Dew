@@ -29,6 +29,49 @@ function getVendors(setTo = null) {
     var x = document.createElement("option");
     x.textContent = " ";
     ven.appendChild(x);
+
+    var vendors = [];
+    
+    function returnAjax(url, callbackFunc, called = false) {
+        if (called == true) {
+            httpRequest = new XMLHttpRequest();
+            httpRequest.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) { // correct codes
+                    // process server response
+                    console.log(this);
+                    console.log(this.responseText);
+                    try {
+                        var data = JSON.parse(httpRequest.responseText);
+                    } catch(err) {
+                        console.log(err.message + " in " + httpRequest.responseText);
+                        return;
+                    }
+                    callbackFunc(data);
+                }
+            };
+            httpRequest.open("GET", url, true);
+            httpRequest.send();
+        }
+    }
+
+    returnAjax('getter.php', function(data) {
+        /* should show json file detailing all the data it pulled.
+        I might not have the database setup correctly, but everything
+        seems fine about my implementation so far, i dunno
+        it's really late and I was already very tired when I started
+        working on this. So I'll look at it tomorrow. But without the
+        database setup correctly, I doubt that there's anything I can do. */
+        console.log(data); // TODO: Test this on a PC with the database working
+    }, true);
+
+    
+    /* $.ajax({
+        url:"getter.php",
+        type: "post",
+        datatype: 'json',
+        success: function (response)
+    }); */
+    
     // TODO: Insert Database functionality, replace this demo
     /*
     // THIS IS PSEUDOCODE, PLEASE REVIEW IT BEFORE YOU UNCOMMENT THIS AND CALL IT A DAY. It should go something like this though, if I know what I'm doing.
@@ -71,7 +114,6 @@ function onVSelect() {
 function getItems() {
     function newItems(called = false) { // for add item button
         if (called == true) {
-            console.log("newItems() called");
             newDiv = document.createElement("div");
             var conNum = document.createElement("input");
             conNum.type = "text";
@@ -143,58 +185,22 @@ function getItems() {
     itemDiv.append(liDiv);
 
     var buttonsDiv = document.getElementById("buttonsDiv");
-    
-    var addItemButton = document.createElement("button");
-    addItemButton.type = "button";
-    addItemButton.textContent = "Click to add new item";
-    addItemButton.onclick = function() {newItems(true)};
 
-    var finalizeButton = document.createElement("button");
-    finalizeButton.type = "button";
-    finalizeButton.textContent = "Finalize Item Selection";
+    if (buttonsDiv.visibility != "visible") {
+        var addItemButton = document.createElement("button");
+        addItemButton.type = "button";
+        addItemButton.textContent = "Click to add new item";
+        addItemButton.onclick = function() {newItems(true)};
 
-    buttonsDiv.append(addItemButton);
-    buttonsDiv.append(finalizeButton);
+        var finalizeButton = document.createElement("button");
+        finalizeButton.type = "button";
+        finalizeButton.textContent = "Finalize Item Selection";
 
-    buttonsDiv.visibility = "visible";
+        buttonsDiv.append(addItemButton);
+        buttonsDiv.append(finalizeButton);
 
-    /*var select = document.createElement("select");
-    var x = document.createElement("option");
-    x.textContent = " ";
-    select.appendChild(x);
-    for (i = 0; i < dict[vID].length; i++) {
-        var itemName = dict[vID][i];
-        var n = document.createElement("option");
-        n.textContent = itemName;
-        n.value = itemName;
-        select.appendChild(n);
+        buttonsDiv.visibility = "visible";
     }
-
-    var quantity = document.createElement("input");
-    quantity.id = "quantity";
-    quantity.type = "number";
-    quantity.step = "1";
-    quantity.value = "1";
-    quantity.min = "1";
-
-    var br = document.createElement("br");
-
-    var addItemButton = document.createElement("button");
-    addItemButton.type = "button";
-    addItemButton.textContent = "Click to add new item";
-    addItemButton.onclick = "newItems()";
-
-    var button = document.createElement("button");
-    button.type = "button";
-    button.textContent = "Finalize Item Selection";
-
-    itemDiv.appendChild(select);
-    itemDiv.appendChild(quantity);
-    itemDiv.appendChild(br);
-    itemDiv.appendChild(addItemButton);
-    itemDiv.appendChild(button);
-
-    itemDiv.style.visibility = "visible";*/
 }
 
 
@@ -206,11 +212,6 @@ function validatePhone(phoneNo) {
     } else {
         return false;
     }
-}
-
-function validateState(state) {
-    // TODO: fill in
-    return 0
 }
 
 function validateZip(zip) {
@@ -276,7 +277,11 @@ function newVendor(vName, vMail, vPhone, vAddress, vCity, vState, vZip) {
     }
 
     // validate address
-    // TODO: validate address field
+    if (vAddress.value.length < 1) {
+        warn.textContent = "Address Field is required!";
+        warn.style.visibility = "visible";
+        return false;
+    }
 
     // validate city
     if (vCity.value.length <= 1) {
@@ -292,8 +297,8 @@ function newVendor(vName, vMail, vPhone, vAddress, vCity, vState, vZip) {
     }
 
     // validate state
-    if (vState.value.length != 2) {
-        warn.textContent = "Invalid State!";
+    if (vState.value == "NIL") {
+        warn.textContent = "You must choose a State!";
         warn.style.visibility = "visible";
         return false;
     }
@@ -307,6 +312,6 @@ function newVendor(vName, vMail, vPhone, vAddress, vCity, vState, vZip) {
     }
 
     console.log("All tests were succesful!");
-    console.log(vName.value, vMail.value, vPhone.value, vAddress.value, vCity.value, vState.value, vZip.value); // branch specific line
+    console.log(vName.value, vMail.value, vPhone.value, vAddress.value, vCity.value, vState.value, vZip.value);
     return true;
 }
