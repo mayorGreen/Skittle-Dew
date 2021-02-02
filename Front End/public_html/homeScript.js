@@ -30,16 +30,16 @@ function getVendors(setTo = null) {
     x.textContent = " ";
     ven.appendChild(x);
 
-    var vendors = [];
+    var vendors = [[" ", 0]];
     
-    function returnAjax(url, callbackFunc) {
-        if (true) {
+    function returnAjax(url, callbackFunc, called = false) {
+        if (called == true) {
             httpRequest = new XMLHttpRequest();
             httpRequest.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) { // correct codes
                     // process server response
-                    console.log(this);
-                    console.log(this.responseText);
+                    //console.log(this);
+                    //console.log(this.responseText);
                     try {
                         var data = JSON.parse(httpRequest.responseText);
                     } catch(err) {
@@ -55,47 +55,28 @@ function getVendors(setTo = null) {
     }
 
     returnAjax('getter.php', function(data) {
-        /* should show json file detailing all the data it pulled.
-        I might not have the database setup correctly, but everything
-        seems fine about my implementation so far, i dunno
-        it's really late and I was already very tired when I started
-        working on this. So I'll look at it tomorrow. But without the
-        database setup correctly, I doubt that there's anything I can do. */
-        console.log(data); // TODO: Test this on a PC with the database working
+        // console.log(data); // debug
+        for (var i = 0; i < data.length-1; i++) {
+            vendors.push([data[i].name, data[i].id]);
+        }
+        console.log(vendors);
+        console.log(vendors.length);
+
+        for (var i = 0; i < vendors.length; i++) {
+            var name = vendors[i][0];
+            var ID = vendors[i][1];
+            var element = document.createElement("option");
+            element.textContent = name;
+            element.value = ID;
+            ven.appendChild(element);
+        }
+        if (setTo != null) {
+            ven.value = setTo;
+        }
     }, true);
+}
 
     
-    /* $.ajax({
-        url:"getter.php",
-        type: "post",
-        datatype: 'json',
-        success: function (response)
-    }); */
-    
-    // TODO: Insert Database functionality, replace this demo
-    /*
-    // THIS IS PSEUDOCODE, PLEASE REVIEW IT BEFORE YOU UNCOMMENT THIS AND CALL IT A DAY. It should go something like this though, if I know what I'm doing.
-    for(var i = 0; i < vendVals.length; i++) { // import vendVals from database, through index.js
-        var vendor = vendVals[i];
-        var element = document.createElement("option");
-        element.textContent = vendor["name"];
-        element.value = vendor["ID"];
-        ven.appendChild(element);
-    }
-    */
-    var arr = [["Initech", 1], ["Falconghini", 2], ["Aperture Science", 3]];
-    for (var i = 0; i < arr.length; i++) {
-        var name = arr[i][0];
-        var ID = arr[i][1];
-        var element = document.createElement("option");
-        element.textContent = name;
-        element.value = ID;
-        ven.appendChild(element);
-    }
-    if (setTo != null) {
-        ven.value = setTo;
-    }
-}
 
 function onVSelect() {
     var vendor = document.getElementById("vendSelect");
