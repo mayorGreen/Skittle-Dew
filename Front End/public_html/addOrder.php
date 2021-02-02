@@ -17,17 +17,17 @@ if (isset($_POST['submit'])) {
     $userLogin = strval($_POST[uLogin]);
     $countyOffice = strval($_POST[cOffice]);
     $contractNumber = intval($_POST[cNumber]);
-    $itemName = intval($_POST[iName]);
+    $itemName = strval($_POST[iName]);
     $orderDate = strval($_POST[oDate]);
     //represented by a bit (1 or 0) and should be identified as a yes or no drop down.
     //If orderComplete is yes then orderVoid must be no and vice versus
-    $orderComplete = strval($_POST[oComplete]);
-    $order_void = strval($_POST[oVoid]);
+    $orderComplete = intval($_POST[oComplete]);
+    $order_void = intval($_POST[oVoid]);
     $orderDescription = strval($_POST[oDescription]);
-    $orderQuantity = strval($_POST[oQuantity]);
+    $orderQuantity = intval($_POST[oQuantity]);
     $unitPrice = intval($_POST[uPrice]);
     $itemTotal = intval($_POST[iTotal]);
-    $totalPrice = strval($_POST[tPrice]);
+    $totalPrice = intval($_POST[tPrice]);
     $notes = strval($_POST[note]);
 
     $sql = "SET ANSI_WARNINGS OFF SET IDENTITY_INSERT Order_Table ON Insert INTO Order_Table(Order_ID,Vendor_ID,Vendor_Name,User_Login,County_Office,Contract_Number
