@@ -96,10 +96,54 @@ function getItems() {
     function newItems(called = false) { // for add item button
         if (called == true) {
             newDiv = document.createElement("div");
+
+            var userName = document.createElement("input");
+            userName.type = "text";
+            userName.placeholder = "Username";
+
+            var countyOffice = document.createElement("input");
+            countyOffice.type = "text";
+            countyOffice.placeholder = "County Office";
+
             var conNum = document.createElement("input");
             conNum.type = "text";
             conNum.placeholder = "Contract Number";
 
+            var itemName = document.createElement("input");
+            itemName.type = "text";
+            itemName.placeholder = "Item Name";
+
+            var orderDate = document.createElement("input");
+            orderDate.type = "date";
+            orderDate.placeholder = "Order Date";
+
+
+/*
+//This section is meant to add an order complete and order void checkbox
+//I was unable to get it to work for some reason and hoped you could fix it.
+//When checked the boxes should give a value of 1 (yes) to the database
+//If a box is unchecked then it should send a 0 (no) to the database
+
+            var orderComplete = document.createElement("input");
+            orderComplete.type = "checkbox";
+            orderComplete.id = "order_complete";
+            orderComplete.name = "Order Complete";
+
+            var complete = document.createElement("label");
+            complete.type = "label";
+            complete.htmlFor = "order_complete";
+            complete.textContent = "Order Complete ";
+
+            var orderVoid = document.createElement("input");
+            orderVoid.type = "checkbox";
+            orderVoid.id = "order_void";
+            orderVoid.placeholder = "Order Void";
+
+            var oVoid = document.createElement("label");
+            oVoid.type = "label";
+            oVoid.htmlFor = "order_void";
+            oVoid.textContent = "Order Void ";
+*/
             var desc = document.createElement("input");
             desc.type = "text";
             desc.placeholder = "Item Description";
@@ -119,10 +163,36 @@ function getItems() {
             price.step = "any";
             price.placeholder = "Price";
 
+            var total = document.createElement("input");
+            total.id = "total";
+            total.type = "number";
+            total.placeholder = "Item Total";
+
+            var totalPrice = document.createElement("input");
+            totalPrice.id = "totalPrice";
+            totalPrice.type = "number";
+            totalPrice.placeholder = "Total Price";
+
+            var notes = document.createElement("input");
+            notes.type = "text";
+            notes.placeholder = "Notes";
+
+
+            newDiv.appendChild(userName);
+            newDiv.appendChild(countyOffice);
             newDiv.appendChild(conNum);
+            newDiv.appendChild(itemName);
+            newDiv.appendChild(orderDate);
+            newDiv.appendChild(orderComplete);
+            //newdiv.appendChild(complete);
+            //newdiv.appendChild(orderVoid);
+            //newdiv.appendChild(oVoid);
             newDiv.appendChild(desc);
             newDiv.appendChild(quantity);
             newDiv.appendChild(price);
+            newDiv.appendChild(total);
+            newDiv.appendChild(totalPrice);
+            newDiv.appendChild(notes);
             
             newDiv.appendChild(document.createElement("br"));
 
@@ -134,10 +204,46 @@ function getItems() {
     var itemDiv = document.getElementById("itemDiv");
     var liDiv = document.createElement("div");
 
+    var userName = document.createElement("input");
+    userName.type = "text";
+    userName.placeholder = "Username";
+
+    var countyOffice = document.createElement("input");
+    countyOffice.type = "text";
+    countyOffice.placeholder = "County Office";
+
     var conNum = document.createElement("input");
     conNum.type = "text";
     conNum.placeholder = "Contract Number";
 
+    var itemName = document.createElement("input");
+    itemName.type = "text";
+    itemName.placeholder = "Item Name";
+
+    var orderDate = document.createElement("input");
+    orderDate.type = "date";
+    orderDate.placeholder = "Order Date";
+/*
+    var orderComplete = document.createElement("input");
+    orderComplete.type = "checkbox";
+    orderComplete.id = "order_complete";
+    complete.name = "Order Complete";
+
+    var complete = document.getElementById("label");
+    complete.type = "label";
+    complete.htmlFor = "order_complete";
+    complete.textContent = "Order Complete ";
+
+    var orderVoid = document.createElement("input");
+    orderVoid.type = "checkbox";
+    orderVoid.id = "order_void";
+    orderVoid.placeholder = "Order Void";
+
+    var oVoid = document.createElement("label");
+    oVoid.type = "label";
+    oVoid.htmlFor = "order_void";
+    oVoid.textContent = "Order Void ";
+*/
     var desc = document.createElement("input");
     desc.type = "text";
     desc.placeholder = "Item Description";
@@ -157,10 +263,36 @@ function getItems() {
     price.step = "any";
     price.placeholder = "Price";
 
+    var total = document.createElement("input");
+    total.id = "total";
+    total.type = "number";
+    total.placeholder = "Item Total";
+
+    var totalPrice = document.createElement("input");
+    totalPrice.id = "totalPrice";
+    totalPrice.type = "number";
+    totalPrice.placeholder = "Total Price";
+
+    var notes = document.createElement("input");
+    notes.type = "text";
+    notes.placeholder = "Notes";
+
+
+    liDiv.appendChild(userName);
+    liDiv.appendChild(countyOffice);
     liDiv.appendChild(conNum);
+    liDiv.appendChild(itemName);
+    liDiv.appendChild(orderDate);
+    //liDiv.appendChild(orderComplete);
+    //liDiv.appendChild(complete);
+    //livDiv.appendChild(orderVoid);
+    //liDiv.appendChild(oVoid);
     liDiv.appendChild(desc);
     liDiv.appendChild(quantity);
     liDiv.appendChild(price);
+    liDiv.appendChild(total);
+    liDiv.appendChild(totalPrice);
+    liDiv.appendChild(notes);
     
     liDiv.appendChild(document.createElement("br"));
     itemDiv.append(liDiv);
