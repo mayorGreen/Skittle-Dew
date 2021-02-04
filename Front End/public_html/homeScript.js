@@ -163,11 +163,6 @@ function getItems() {
             price.step = "any";
             price.placeholder = "Price";
 
-            var total = document.createElement("input");
-            total.id = "total";
-            total.type = "number";
-            total.placeholder = "Item Total";
-
             var totalPrice = document.createElement("input");
             totalPrice.id = "totalPrice";
             totalPrice.type = "number";
@@ -190,7 +185,6 @@ function getItems() {
             newDiv.appendChild(desc);
             newDiv.appendChild(quantity);
             newDiv.appendChild(price);
-            newDiv.appendChild(total);
             newDiv.appendChild(totalPrice);
             newDiv.appendChild(notes);
             
@@ -263,11 +257,6 @@ function getItems() {
     price.step = "any";
     price.placeholder = "Price";
 
-    var total = document.createElement("input");
-    total.id = "total";
-    total.type = "number";
-    total.placeholder = "Item Total";
-
     var totalPrice = document.createElement("input");
     totalPrice.id = "totalPrice";
     totalPrice.type = "number";
@@ -290,7 +279,6 @@ function getItems() {
     liDiv.appendChild(desc);
     liDiv.appendChild(quantity);
     liDiv.appendChild(price);
-    liDiv.appendChild(total);
     liDiv.appendChild(totalPrice);
     liDiv.appendChild(notes);
     
