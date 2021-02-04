@@ -26,7 +26,9 @@ if (isset($_POST['submit'])) {
     $orderDescription = strval($_POST[oDescription]);
     $orderQuantity = intval($_POST[oQuantity]);
     $unitPrice = intval($_POST[uPrice]);
-    $itemTotal = intval($_POST[iTotal]);
+    //Item total is unneeded and has been removed from the database
+    //Rob you will need to remove this from your database as well
+    //$itemTotal = intval($_POST[iTotal]);
     $totalPrice = intval($_POST[tPrice]);
     $notes = strval($_POST[note]);
 
