@@ -26,9 +26,6 @@ function openTab(event, tabName) {
 function getVendors(setTo = null) {
     var ven = document.getElementById("vendSelect");
     ven.innerHTML = '';
-    var x = document.createElement("option");
-    x.textContent = " ";
-    ven.appendChild(x);
 
     var vendors = [[" ", 0]];
     
@@ -59,6 +56,7 @@ function getVendors(setTo = null) {
         for (var i = 0; i < data.length-1; i++) {
             vendors.push([data[i].name, data[i].id]);
         }
+        vendors.sort();
         console.log(vendors);
         console.log(vendors.length);
 
@@ -97,32 +95,12 @@ function getItems() {
         if (called == true) {
             newDiv = document.createElement("div");
 
-            var userName = document.createElement("input");
-            userName.type = "text";
-            userName.placeholder = "Username";
-
-            var countyOffice = document.createElement("input");
-            countyOffice.type = "text";
-            countyOffice.placeholder = "County Office";
-
-            var conNum = document.createElement("input");
-            conNum.type = "text";
-            conNum.placeholder = "Contract Number";
-
             var itemName = document.createElement("input");
             itemName.type = "text";
             itemName.placeholder = "Item Name";
 
-            var orderDate = document.createElement("input");
-            orderDate.type = "date";
-            orderDate.placeholder = "Order Date";
-
-
 /*
-//This section is meant to add an order complete and order void checkbox
-//I was unable to get it to work for some reason and hoped you could fix it.
-//When checked the boxes should give a value of 1 (yes) to the database
-//If a box is unchecked then it should send a 0 (no) to the database
+
 
             var orderComplete = document.createElement("input");
             orderComplete.type = "checkbox";
@@ -159,8 +137,8 @@ function getItems() {
             var price = document.createElement("input");
             price.id = "price";
             price.type = "number";
-            price.min = "0.01";
-            price.step = "any";
+            price.min = "1";
+            price.step = "1";
             price.placeholder = "Price";
 
             var totalPrice = document.createElement("input");
@@ -172,13 +150,7 @@ function getItems() {
             notes.type = "text";
             notes.placeholder = "Notes";
 
-
-            newDiv.appendChild(userName);
-            newDiv.appendChild(countyOffice);
-            newDiv.appendChild(conNum);
             newDiv.appendChild(itemName);
-            newDiv.appendChild(orderDate);
-            newDiv.appendChild(orderComplete);
             //newdiv.appendChild(complete);
             //newdiv.appendChild(orderVoid);
             //newdiv.appendChild(oVoid);
@@ -191,36 +163,73 @@ function getItems() {
             newDiv.appendChild(document.createElement("br"));
 
             itemDiv.append(newDiv);
-            //itemDiv.style.visibility = "visible";
+            itemDiv.style.visibility = "visible";
         }
     }
 
+    var infoDiv = document.getElementById("infoDiv");
     var itemDiv = document.getElementById("itemDiv");
     var liDiv = document.createElement("div");
 
-    var userName = document.createElement("input");
-    userName.type = "text";
-    userName.placeholder = "Username";
+    if (infoDiv.visibility != "visible") {
+        var userName = document.createElement("input");
+        userName.type = "text";
+        userName.placeholder = "Username";
+        userName.id = "user_name";
 
-    var countyOffice = document.createElement("input");
-    countyOffice.type = "text";
-    countyOffice.placeholder = "County Office";
+        var countyOffice = document.createElement("input");
+        countyOffice.type = "text";
+        countyOffice.placeholder = "County Office";
+        countyOffice.id = "county_office";
 
-    var conNum = document.createElement("input");
-    conNum.type = "text";
-    conNum.placeholder = "Contract Number";
+        var conNum = document.createElement("input");
+        conNum.type = "text";
+        conNum.placeholder = "Contract Number";
+        conNum.id = "Contract_Number";
 
-    var itemName = document.createElement("input");
-    itemName.type = "text";
-    itemName.placeholder = "Item Name";
+        var utc = new Date().toJSON().slice(0,10);
+        console.log(utc)
 
-    var orderDate = document.createElement("input");
-    orderDate.type = "date";
-    orderDate.placeholder = "Order Date";
+        var orderDate = document.createElement("input");
+        orderDate.type = "date";
+        orderDate.value = utc;
+        orderDate.id = "date"
+
+        var orderComplete = document.createElement("input");
+        orderComplete.type = "checkbox";
+        orderComplete.id = "order_complete";
+
+        var orderVoid = document.createElement("input");
+        orderVoid.type = "checkbox";
+        orderVoid.id = "order_void";
+
+        var orderLabel = document.createElement("span");
+        orderLabel.textContent = " Order Complete: "
+
+        var voidLabel = document.createElement("span");
+        voidLabel.textContent = " Void Complete: "
+
+        infoDiv.appendChild(userName);
+        infoDiv.appendChild(countyOffice);
+        infoDiv.appendChild(conNum);
+        infoDiv.appendChild(orderDate);
+        infoDiv.appendChild(orderLabel);
+        infoDiv.appendChild(orderComplete);
+        infoDiv.appendChild(voidLabel);
+        infoDiv.appendChild(orderVoid);
+
+        infoDiv.visibility = "visible";
+    }
+
 /*
+//This section is meant to add an order complete and order void checkbox
+//I was unable to get it to work for some reason and hoped you could fix it.
+//When checked the boxes should give a value of 1 (yes) to the database
+//If a box is unchecked then it should send a 0 (no) to the database
+
     var orderComplete = document.createElement("input");
-    orderComplete.type = "checkbox";
     orderComplete.id = "order_complete";
+    orderComplete.type = "checkbox";
     complete.name = "Order Complete";
 
     var complete = document.getElementById("label");
@@ -238,6 +247,11 @@ function getItems() {
     oVoid.htmlFor = "order_void";
     oVoid.textContent = "Order Void ";
 */
+
+    var itemName = document.createElement("input");
+    itemName.type = "text";
+    itemName.placeholder = "Item Name";
+
     var desc = document.createElement("input");
     desc.type = "text";
     desc.placeholder = "Item Description";
@@ -253,7 +267,7 @@ function getItems() {
     var price = document.createElement("input");
     price.id = "price";
     price.type = "number";
-    price.min = "0.01";
+    price.min = "1";
     price.step = "any";
     price.placeholder = "Price";
 
@@ -267,11 +281,7 @@ function getItems() {
     notes.placeholder = "Notes";
 
 
-    liDiv.appendChild(userName);
-    liDiv.appendChild(countyOffice);
-    liDiv.appendChild(conNum);
     liDiv.appendChild(itemName);
-    liDiv.appendChild(orderDate);
     //liDiv.appendChild(orderComplete);
     //liDiv.appendChild(complete);
     //livDiv.appendChild(orderVoid);
@@ -293,9 +303,9 @@ function getItems() {
         addItemButton.textContent = "Click to add new item";
         addItemButton.onclick = function() {newItems(true)};
 
-        var finalizeButton = document.createElement("button");
-        finalizeButton.type = "button";
-        finalizeButton.textContent = "Finalize Item Selection";
+        var finalizeButton = document.createElement("input");
+        finalizeButton.type = "submit";
+        finalizeButton.value = "Finalize Item Selection";
 
         buttonsDiv.append(addItemButton);
         buttonsDiv.append(finalizeButton);
