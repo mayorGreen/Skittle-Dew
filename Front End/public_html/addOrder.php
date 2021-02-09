@@ -12,7 +12,7 @@ if (isset($_POST['submit'])) {
     }
 
 
-    $vendorID = strval($_POST[vID]);
+    $vendorID = ($_POST[vID]);
     $vendorName = strval($_POST[vName]);
     $userLogin = strval($_POST[uLogin]);
     $countyOffice = strval($_POST[cOffice]);
@@ -21,18 +21,22 @@ if (isset($_POST['submit'])) {
     $orderDate = strval($_POST[oDate]);
     //represented by a bit (1 or 0) and should be identified as a yes or no drop down.
     //If orderComplete is yes then orderVoid must be no and vice versus
-    $orderComplete = intval($_POST[oComplete]);
-    $order_void = intval($_POST[oVoid]);
+    $orderComplete = boolval($_POST[oComplete]);
+    $order_void = boolval($_POST[oVoid]);
     $orderDescription = strval($_POST[oDescription]);
     $orderQuantity = intval($_POST[oQuantity]);
-    $unitPrice = intval($_POST[uPrice]);
-    //Item total is unneeded and has been removed from the database
-    //Rob you will need to remove this from your database as well
-    //$itemTotal = intval($_POST[iTotal]);
-    $totalPrice = intval($_POST[tPrice]);
+    $unitPrice = doubleval($_POST[uPrice]);
+    $totalPrice = doubleval($_POST[tPrice]);
     $notes = strval($_POST[note]);
 
-    $sql = "SET ANSI_WARNINGS OFF SET IDENTITY_INSERT Order_Table ON Insert INTO Order_Table(Order_ID,Vendor_ID,Vendor_Name,User_Login,County_Office,Contract_Number
+
+    if($orderComplete == TRUE) $orderComplete = 1;
+    else $orderComplete = 0;
+
+    if($order_void == TRUE) $order_void = 1;
+    else $order_void = 0;
+
+    $sql = "SET ANSI_WARNINGS OFF Insert INTO Order_Table(Order_ID,Vendor_ID,Vendor_Name,User_Login,County_Office,Contract_Number
         ,Item_Name,Order_Date,Order_Complete,Order_Void,Order_Description,Order_Quantity,Unit_Price,Total_Price,Notes)
         VALUES(NEWID(),?,?,?,?,?,?,?,?,?,?,?,?,?,?) SET ANSI_WARNINGS ON";
     $params = array($vendorID, $vendorName, $userLogin, $countyOffice, $contractNumber, $itemName, $orderDate, $orderComplete, $order_void,$orderDescription, $orderQuantity, $unitPrice,$totalPrice,$notes);
@@ -44,6 +48,7 @@ if (isset($_POST['submit'])) {
     }
 
     sqlsvr_close($conn);
+    echo "We did it!";
 }
 exit;
 
