@@ -19,7 +19,7 @@
         <!--TODO: Update this section to have functionality-->
         <div id="addOrder" class="tabcontent">
             <h2>Add Order</h2>
-            <form method="POST" action="addOrder.php">
+            <form method="POST" action="addOrder.php" onsubmit="return vID, vName, uLogin, cOffice, cNumber, iName, oDate, oComplete, oVoid, oDescription, oQuantity, uPrice, tPrice, note">
                 <label for="vendSelect">Select a Vendor: </label>
                 <select class="form-control" id="vendSelect" onchange="onVSelect()"></select>
                 <br>
