@@ -62,10 +62,12 @@ function getVendors(setTo = null) {
 
         for (var i = 0; i < vendors.length; i++) {
             var name = vendors[i][0];
-            var ID = vendors[i][1];
+            var vID = vendors[i][1];
             var element = document.createElement("option");
             element.textContent = name;
-            element.value = ID;
+            element.name = "vName";
+            element.value = vID;
+
             ven.appendChild(element);
         }
         if (setTo != null) {
@@ -98,33 +100,12 @@ function getItems() {
             var itemName = document.createElement("input");
             itemName.type = "text";
             itemName.placeholder = "Item Name";
+            itemName.name = "iName";
 
-/*
-
-
-            var orderComplete = document.createElement("input");
-            orderComplete.type = "checkbox";
-            orderComplete.id = "order_complete";
-            orderComplete.name = "Order Complete";
-
-            var complete = document.createElement("label");
-            complete.type = "label";
-            complete.htmlFor = "order_complete";
-            complete.textContent = "Order Complete ";
-
-            var orderVoid = document.createElement("input");
-            orderVoid.type = "checkbox";
-            orderVoid.id = "order_void";
-            orderVoid.placeholder = "Order Void";
-
-            var oVoid = document.createElement("label");
-            oVoid.type = "label";
-            oVoid.htmlFor = "order_void";
-            oVoid.textContent = "Order Void ";
-*/
             var desc = document.createElement("input");
             desc.type = "text";
             desc.placeholder = "Item Description";
+            desc.name = "oDescription";
 
             var quantity = document.createElement("input");
             quantity.id = "quantity";
@@ -133,6 +114,7 @@ function getItems() {
             quantity.value = "1";
             quantity.min = "1";
             quantity.placeholder = "Quantity";
+            quantity.name = "oQuantity";
 
             var price = document.createElement("input");
             price.id = "price";
@@ -140,20 +122,20 @@ function getItems() {
             price.min = "1";
             price.step = "1";
             price.placeholder = "Price";
+            price.name = "uPrice";
 
             var totalPrice = document.createElement("input");
             totalPrice.id = "totalPrice";
             totalPrice.type = "number";
             totalPrice.placeholder = "Total Price";
+            totalPrice.name = "tPrice";
 
             var notes = document.createElement("input");
             notes.type = "text";
             notes.placeholder = "Notes";
+            notes.name = "note";
 
             newDiv.appendChild(itemName);
-            //newdiv.appendChild(complete);
-            //newdiv.appendChild(orderVoid);
-            //newdiv.appendChild(oVoid);
             newDiv.appendChild(desc);
             newDiv.appendChild(quantity);
             newDiv.appendChild(price);
@@ -176,16 +158,19 @@ function getItems() {
         userName.type = "text";
         userName.placeholder = "Username";
         userName.id = "user_name";
+        userName.name = "uLogin";
 
         var countyOffice = document.createElement("input");
         countyOffice.type = "text";
         countyOffice.placeholder = "County Office";
         countyOffice.id = "county_office";
+        countyOffice.name = "cOffice";
 
         var conNum = document.createElement("input");
         conNum.type = "text";
         conNum.placeholder = "Contract Number";
         conNum.id = "Contract_Number";
+        conNum.name = "cNumber"
 
         var utc = new Date().toJSON().slice(0,10);
         console.log(utc)
@@ -194,14 +179,17 @@ function getItems() {
         orderDate.type = "date";
         orderDate.value = utc;
         orderDate.id = "date"
+        orderDate.name = "oDate";
 
         var orderComplete = document.createElement("input");
         orderComplete.type = "checkbox";
         orderComplete.id = "order_complete";
+        orderComplete.name = "oComplete";
 
         var orderVoid = document.createElement("input");
         orderVoid.type = "checkbox";
         orderVoid.id = "order_void";
+        orderVoid.name = "oVoid";
 
         var orderLabel = document.createElement("span");
         orderLabel.textContent = " Order Complete: "
@@ -221,40 +209,16 @@ function getItems() {
         infoDiv.visibility = "visible";
     }
 
-/*
-//This section is meant to add an order complete and order void checkbox
-//I was unable to get it to work for some reason and hoped you could fix it.
-//When checked the boxes should give a value of 1 (yes) to the database
-//If a box is unchecked then it should send a 0 (no) to the database
-
-    var orderComplete = document.createElement("input");
-    orderComplete.id = "order_complete";
-    orderComplete.type = "checkbox";
-    complete.name = "Order Complete";
-
-    var complete = document.getElementById("label");
-    complete.type = "label";
-    complete.htmlFor = "order_complete";
-    complete.textContent = "Order Complete ";
-
-    var orderVoid = document.createElement("input");
-    orderVoid.type = "checkbox";
-    orderVoid.id = "order_void";
-    orderVoid.placeholder = "Order Void";
-
-    var oVoid = document.createElement("label");
-    oVoid.type = "label";
-    oVoid.htmlFor = "order_void";
-    oVoid.textContent = "Order Void ";
-*/
 
     var itemName = document.createElement("input");
     itemName.type = "text";
     itemName.placeholder = "Item Name";
+    itemName.name = "iName";
 
     var desc = document.createElement("input");
     desc.type = "text";
     desc.placeholder = "Item Description";
+    desc.name = "oDescription";
 
     var quantity = document.createElement("input");
     quantity.id = "quantity";
@@ -263,6 +227,7 @@ function getItems() {
     quantity.value = "1";
     quantity.min = "1";
     quantity.placeholder = "Quantity";
+    quantity.name = "oQuantity";
 
     var price = document.createElement("input");
     price.id = "price";
@@ -270,22 +235,21 @@ function getItems() {
     price.min = "1";
     price.step = "any";
     price.placeholder = "Price";
+    price.name = "uPrice";
 
     var totalPrice = document.createElement("input");
     totalPrice.id = "totalPrice";
     totalPrice.type = "number";
     totalPrice.placeholder = "Total Price";
+    totalPrice.name = "tPrice";
 
     var notes = document.createElement("input");
     notes.type = "text";
     notes.placeholder = "Notes";
+    notes.name = "note";
 
 
     liDiv.appendChild(itemName);
-    //liDiv.appendChild(orderComplete);
-    //liDiv.appendChild(complete);
-    //livDiv.appendChild(orderVoid);
-    //liDiv.appendChild(oVoid);
     liDiv.appendChild(desc);
     liDiv.appendChild(quantity);
     liDiv.appendChild(price);
