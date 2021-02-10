@@ -10,13 +10,27 @@
     <body>
         <h1>Buchanan County Purchase Orders</h1>
         <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'userLogin')" id="default"> User Login</button>
             <button class="tablinks" onclick="openTab(event, 'addOrder')" >Add Order</button>
             <button class="tablinks" onclick="openTab(event, 'editOrder')">Edit Order</button>
-            <button class="tablinks" onclick="openTab(event, 'createVendor')" id="default">Add Vendor</button>
+            <button class="tablinks" onclick="openTab(event, 'createVendor')">Add Vendor</button>
             <button class="tablinks" onclick="openTab(event, 'createReports')">Create Reports</button>
         </div>
 
         <!--TODO: Update this section to have functionality-->
+        <div id="userLogin" class="tabcontent">
+            <h2>Please Login</h2>
+            <form method="post" action="login.php" onsubmit="return userLogin, userPassword">
+                <label for="userName">Username: </label>
+                <input id="userName" type="text" name="userLogin">
+                <br>
+                <label for="userPass">Password: </label>
+                <input id="userPass" type="text" name="userPassword">
+                <br>
+                <input type="submit" name="submit" value="Login">
+            </form>
+        </div>
+
         <div id="addOrder" class="tabcontent">
             <h2>Add Order</h2>
             <form method="POST" action="addOrder.php" onsubmit="return vID, vName, uLogin, cOffice, cNumber, iName, oDate, oComplete, oVoid, oDescription, oQuantity, uPrice, tPrice, note">
