@@ -9,24 +9,23 @@ if (isset($_POST['submit'])) {
         die(print_r(sqlsrv_errors(), true));
     }
 
-        $user = $_POST['userLogin'];
-        $pass = $_POST['userPassword'];
+    $user = $_POST['userLogin'];
+    $pass = $_POST['userPassword'];
 
     $sql = "SELECT * FROM User_Table WHERE User_Login = ? AND User_Password = ?";
-    $params = array($user,$pass);
+    $params = array($user, $pass);
 
-    $result = sqlsrv_query($conn,$sql,$params);
+    $result = sqlsrv_query($conn, $sql, $params);
     $rows = sqlsrv_has_rows($result);
-    if($rows==1){
-        echo "Success";}
-    else{
-        echo "Invalid username/password";
-        echo $user;
-        echo $pass;
-        echo "Row count = $rows";
+    if ($rows == 1) {
+        //echo "Success";
+        Header( 'Location: success.php?success=1' );
     }
-
+    else{
+        Header( 'Location: failed.php?failed=1' );
+        //echo "Invalid username/password";
+        //echo "Row count = $rows";
+    }
     sqlsvr_close($conn);
-    echo "We did it!";
 }
 exit;
