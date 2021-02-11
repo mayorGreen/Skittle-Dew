@@ -1,0 +1,141 @@
+<html lang="en">
+    <!--Copyright (C) Skittle-Dew 2020. All Rights Reserved.-->
+    <head>
+        <meta charset="UTF-8">
+        <title>PO System</title>
+        <link rel="icon" href="favicon.ico">
+        <link rel="stylesheet" href="style.css">
+        <script src="homeScript.js"></script>
+    </head>
+    <body>
+        <h1>Buchanan County Purchase Orders</h1>
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'welcomePage')" id="default"> Welcome</button>
+            <button class="tablinks" onclick="openTab(event, 'addOrder')" >Add Order</button>
+            <button class="tablinks" onclick="openTab(event, 'editOrder')">Edit Order</button>
+            <button class="tablinks" onclick="openTab(event, 'createVendor')">Add Vendor</button>
+            <button class="tablinks" onclick="openTab(event, 'createReports')">Create Reports</button>
+        </div>
+
+        <!--TODO: Update this section to have functionality-->
+
+        <div id="welcomePage" class="tabcontent">
+            <h2>Welcome to the Buchanan County Purchase Order System</h2>
+        </div>
+
+        <div id="addOrder" class="tabcontent">
+            <h2>Add Order</h2>
+            <form method="POST" action="addOrder.php" onsubmit="return vID, vName, uLogin, cOffice, cNumber, iName, oDate, oComplete, oVoid, oDescription, oQuantity, uPrice, tPrice, note">
+                <label for="vendSelect">Select a Vendor: </label>
+                <select class="form-control" id="vendSelect" onchange="onVSelect()"></select>
+                <br>
+                <div id="infoDiv" visibility="invisible">
+                </div>
+                <br>
+                <!--Items-->
+                <div id="itemDiv">
+                </div>
+                <br>
+                <div id="buttonsDiv" visibility="invisible">
+                </div>
+            </form>
+        </div>
+        <div id="editOrder" class="tabcontent">
+            <h2>Edit Existing Order</h2>
+        </div>
+
+        <div
+            id="createVendor" class="tabcontent">
+            <h2>Add New Vendor</h2>
+            <!--Should functionally add a new vendor to the vendor table-->
+            <script type="text/javascript">
+                window.addEventListener('keydown',function(e){if(e.keyIdentifier=='U+000A'||e.keyIdentifier=='Enter'||e.keyCode==13){if(e.target.nodeName=='INPUT'&&e.target.type=='text'){e.preventDefault();return false;}}},true);
+            </script>                
+            <form id = "vCreate" method = "POST" action = "addVendor.php" onsubmit="return newVendor(vname, vmail, vphone, vaddress, vcity, vstate, vzip)">
+            <label for="vendName">Vendor Name: </label>
+            <input id="vendName" type="text" name="vname">
+            <br>
+            <label for="vendEmail">Email Address: </label>
+            <input id="vendEmail" type="text" name="vmail"> <!--Could've made this type="email" but now that we have custom validation rules we kinda have to roll with it-->
+            <br>
+            <label for="vendPhone">Phone Number: </label>
+            <input id="vendPhone" type="text" name="vphone">
+            <br>
+            <label for="vendAddress">Address: </label>
+            <input id="vendAddress" type="text" name="vaddress">
+            <br>
+            <label for="vendCity">City: </label>
+            <input id="vendCity" type="text" name="vcity">
+            <label for="vendState">State: </label>
+            <select from="vCreate" id="vendState" name="vstate">
+                <option value="NIL" selected = "selected"> </option>
+                <option value="AL">AL</option>
+                <option value="AK">AK</option>
+                <option value="AR">AR</option>	
+                <option value="AZ">AZ</option>
+                <option value="CA">CA</option>
+                <option value="CO">CO</option>
+                <option value="CT">CT</option>
+                <option value="DC">DC</option>
+                <option value="DE">DE</option>
+                <option value="FL">FL</option>
+                <option value="GA">GA</option>
+                <option value="HI">HI</option>
+                <option value="IA">IA</option>	
+                <option value="ID">ID</option>
+                <option value="IL">IL</option>
+                <option value="IN">IN</option>
+                <option value="KS">KS</option>
+                <option value="KY">KY</option>
+                <option value="LA">LA</option>
+                <option value="MA">MA</option>
+                <option value="MD">MD</option>
+                <option value="ME">ME</option>
+                <option value="MI">MI</option>
+                <option value="MN">MN</option>
+                <option value="MO">MO</option>	
+                <option value="MS">MS</option>
+                <option value="MT">MT</option>
+                <option value="NC">NC</option>	
+                <option value="NE">NE</option>
+                <option value="NH">NH</option>
+                <option value="NJ">NJ</option>
+                <option value="NM">NM</option>			
+                <option value="NV">NV</option>
+                <option value="NY">NY</option>
+                <option value="ND">ND</option>
+                <option value="OH">OH</option>
+                <option value="OK">OK</option>
+                <option value="OR">OR</option>
+                <option value="PA">PA</option>
+                <option value="RI">RI</option>
+                <option value="SC">SC</option>
+                <option value="SD">SD</option>
+                <option value="TN">TN</option>
+                <option value="TX">TX</option>
+                <option value="UT">UT</option>
+                <option value="VT">VT</option>
+                <option value="VA">VA</option>
+                <option value="WA">WA</option>
+                <option value="WI">WI</option>	
+                <option value="WV">WV</option>
+                <option value="WY">WY</option>
+            </select>	
+            <label for="vendZip">Zip Code: </label>
+            <input id="vendZip" type="text" name="vzip">
+            <br>
+            <input type="submit" name="submit" value="Submit">
+            <p id="avWarn" style="color: #ff0000; visibility: hidden"></p>
+            </form>
+        </div>
+        <div id="createReports" class="tabcontent">
+            <h2>Generate Reports</h2>
+        </div>
+        <script>
+            document.getElementById("default").click();
+        </script>
+    </body>
+    <footer id="footer">
+        <p class="faded"><strong><i>Copyright 2020 Skittle-Dew. All Rights Reserved.</i></strong></p>
+    </footer>
+</html>
