@@ -82,6 +82,13 @@ function onVSelect() {
     var vendor = document.getElementById("vendSelect");
     sessionStorage.setItem("savedVendor", vendor.value);
 
+    var form = document.getElementById("oCreate");
+    var vName = document.createElement("input");
+    vName.type = "hidden";
+    vName.value = vendor.textContent;
+    vName.name = "vName";
+    form.appendChild(vName);
+
     var itemDiv = document.getElementById("itemDiv");
     itemDiv.innerHTML = '';
 

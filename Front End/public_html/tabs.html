@@ -25,9 +25,9 @@
 
         <div id="addOrder" class="tabcontent">
             <h2>Add Order</h2>
-            <form method="POST" action="addOrder.php" onsubmit="return vID, vName, uLogin, cOffice, cNumber, iName, oDate, oComplete, oVoid, oDescription, oQuantity, uPrice, tPrice, note">
+            <form id="oCreate" method="POST" action="addOrder.php" onsubmit="return vID, vName, uLogin, cOffice, cNumber, iName, oDate, oComplete, oVoid, oDescription, oQuantity, uPrice, tPrice, note">
                 <label for="vendSelect">Select a Vendor: </label>
-                <select class="form-control" id="vendSelect" onchange="onVSelect()"></select>
+                <select class="form-control" id="vendSelect" name="vID" onchange="onVSelect()"></select>
                 <br>
                 <div id="infoDiv" visibility="invisible">
                 </div>
