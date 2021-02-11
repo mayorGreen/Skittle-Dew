@@ -38,7 +38,7 @@ if (isset($_POST['submit'])) {
 
     $sql = "SET ANSI_WARNINGS OFF Insert INTO Order_Table(Order_ID,Vendor_ID,Vendor_Name,User_Login,County_Office,Contract_Number
         ,Item_Name,Order_Date,Order_Complete,Order_Void,Order_Description,Order_Quantity,Unit_Price,Total_Price,Notes)
-        VALUES(NEWID(),?,?,?,?,?,?,?,?,?,?,?,?,?,?) SET ANSI_WARNINGS ON";
+        VALUES(NEWID(),CONVERT(uniqueidentifier,?),?,?,?,?,?,?,?,?,?,?,?,?,?) SET ANSI_WARNINGS ON";
     $params = array($vendorID, $vendorName, $userLogin, $countyOffice, $contractNumber, $itemName, $orderDate, $orderComplete, $order_void,$orderDescription, $orderQuantity, $unitPrice,$totalPrice,$notes);
 
     $query = sqlsrv_query($conn, $sql, $params);
