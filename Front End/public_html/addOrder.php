@@ -1,6 +1,6 @@
 <?php
 
-echo('<script type="text/javascript">alert("Order successfully created!");location="http://localhost/Buch_County/index.html";</script>');
+echo('<script type="text/javascript">alert("Order successfully created!");location="tabs.html";</script>');
 
 if (isset($_POST['submit'])) {
     $serverName = "WIN-RUH4VKA5M7L\SQLEXPRESS"; //serverName\instanceName
@@ -19,6 +19,7 @@ if (isset($_POST['submit'])) {
     $contractNumber = intval($_POST[cNumber]);
     $itemName = strval($_POST[iName]);
     $orderDate = strval($_POST[oDate]);
+    echo "$orderDate";
     //represented by a bit (1 or 0) and should be identified as a yes or no drop down.
     //If orderComplete is yes then orderVoid must be no and vice versus
     $orderComplete = boolval($_POST[oComplete]);

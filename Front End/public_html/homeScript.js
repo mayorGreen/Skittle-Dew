@@ -297,6 +297,7 @@ function getItems() {
         var finalizeButton = document.createElement("input");
         finalizeButton.type = "submit";
         finalizeButton.value = "Finalize Item Selection";
+        finalizeButton.name = "submit";
 
         buttonsDiv.append(addItemButton);
         buttonsDiv.append(finalizeButton);
