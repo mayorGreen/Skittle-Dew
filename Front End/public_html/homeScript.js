@@ -83,11 +83,31 @@ function onVSelect() {
     sessionStorage.setItem("savedVendor", vendor.value);
 
     var form = document.getElementById("oCreate");
-    var vName = document.createElement("input");
-    vName.type = "hidden";
-    vName.value = vendor.textContent;
-    vName.name = "vName";
-    form.appendChild(vName);
+
+    if (document.getElementById("vID") == null) {
+        var vID = document.createElement("input");
+        vID.type = "hidden";
+        vID.value = vendor.options[vendor.selectedIndex].value;
+        vID.id = "vID";
+        vID.name = "vID";
+
+        var vName = document.createElement("input");
+        vName.type = "hidden";
+        vName.value = vendor.options[vendor.selectedIndex].text;
+        vName.id = "vName";
+        vName.name = "vName";
+
+        form.appendChild(vID);
+        form.appendChild(vName);
+    } else {
+        var vIDAgain = document.getElementById("vID");
+        vIDAgain.value = vendor.options[vendor.selectedIndex].value;
+
+        var vNameAgain = document.getElementById("vName");
+        vNameAgain.value = vendor.options[vendor.selectedIndex].text;
+    }
+
+
 
     var itemDiv = document.getElementById("itemDiv");
     itemDiv.innerHTML = '';
