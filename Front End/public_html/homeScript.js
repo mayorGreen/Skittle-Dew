@@ -187,23 +187,12 @@ function getItems() {
         userName.id = "user_name";
         userName.name = "uLogin";
 
-        var countyOffice = document.createElement("input");
-        countyOffice.type = "text";
-        countyOffice.placeholder = "County Office";
-        countyOffice.id = "county_office";
-        countyOffice.name = "cOffice";
 
-        var conNum = document.createElement("input");
-        conNum.type = "text";
-        conNum.placeholder = "Contract Number";
-        conNum.id = "Contract_Number";
-        conNum.name = "cNumber"
-
-        var utc = new Date().toJSON().slice(0,10);
+        var utc = new Date().toJSON().slice(0,16);
         console.log(utc)
 
         var orderDate = document.createElement("input");
-        orderDate.type = "date";
+        orderDate.type = "datetime-local";
         orderDate.value = utc;
         orderDate.id = "date"
         orderDate.name = "oDate";
@@ -225,8 +214,6 @@ function getItems() {
         voidLabel.textContent = " Void Complete: "
 
         infoDiv.appendChild(userName);
-        infoDiv.appendChild(countyOffice);
-        infoDiv.appendChild(conNum);
         infoDiv.appendChild(orderDate);
         infoDiv.appendChild(orderLabel);
         infoDiv.appendChild(orderComplete);
@@ -235,7 +222,6 @@ function getItems() {
 
         infoDiv.visibility = "visible";
     }
-
 
     var itemName = document.createElement("input");
     itemName.type = "text";
@@ -326,7 +312,7 @@ function validateZip(zip) {
     }
 }
 
-function newVendor(vName, vMail, vPhone, vAddress, vCity, vState, vZip) {
+function newVendor(vName, vcontract, vMail, vPhone, vAddress, vCity, vState, vZip) {
     var warn = document.getElementById("avWarn");
     warn.style.visibility = "hidden";
 
@@ -415,6 +401,6 @@ function newVendor(vName, vMail, vPhone, vAddress, vCity, vState, vZip) {
     }
 
     console.log("All tests were succesful!");
-    console.log(vName.value, vMail.value, vPhone.value, vAddress.value, vCity.value, vState.value, vZip.value);
+    console.log(vName.value, vcontract.value, vMail.value, vPhone.value, vAddress.value, vCity.value, vState.value, vZip.value);
     return true;
 }
