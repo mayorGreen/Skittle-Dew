@@ -51,7 +51,7 @@ function getVendors(setTo = null) {
         }
     }
 
-    returnAjax('getter.php', function(data) {
+    returnAjax('../../Back End/getter.php', function(data) {
         // console.log(data); // debug
         for (var i = 0; i < data.length-1; i++) {
             vendors.push([data[i].name, data[i].id]);

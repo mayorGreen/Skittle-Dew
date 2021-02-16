@@ -1,5 +1,5 @@
 <?php
-echo('<script type="text/javascript">alert("Vendor successfully created!");location="tabs.html";</script>');
+echo('<script type="text/javascript">alert("Vendor successfully created!");location="../Front End/public_html/tabs.html";</script>');
 if(isset($_POST['submit']))
 {
     //Database connection script

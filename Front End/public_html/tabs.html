@@ -25,7 +25,7 @@
 
         <div id="addOrder" class="tabcontent">
             <h2>Add Order</h2>
-            <form id="oCreate" method="POST" action="addOrder.php" onsubmit="return vID, uLogin, iName, oDate, oComplete, oVoid, oDescription, oQuantity, uPrice, tPrice, note">
+            <form id="oCreate" method="POST" action="../../Back%20End/addOrder.php" onsubmit="return vID, uLogin, iName, oDate, oComplete, oVoid, oDescription, oQuantity, uPrice, tPrice, note">
                 <label for="vendSelect">Select a Vendor: </label>
                 <select class="form-control" id="vendSelect" onchange="onVSelect()"></select>
                 <br>
@@ -51,7 +51,7 @@
             <script type="text/javascript">
                 window.addEventListener('keydown',function(e){if(e.keyIdentifier=='U+000A'||e.keyIdentifier=='Enter'||e.keyCode==13){if(e.target.nodeName=='INPUT'&&e.target.type=='text'){e.preventDefault();return false;}}},true);
             </script>                
-            <form id = "vCreate" method = "POST" action = "addVendor.php" onsubmit="return newVendor(vname, vcontract, vmail, vphone, vaddress, vcity, vstate, vzip)">
+            <form id = "vCreate" method = "POST" action = "../../Back%20End/addVendor.php" onsubmit="return newVendor(vname, vcontract, vmail, vphone, vaddress, vcity, vstate, vzip)">
             <label for="vendName">Vendor Name: </label>
             <input id="vendName" type="text" name="vname">
             <br>
