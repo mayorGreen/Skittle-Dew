@@ -5,16 +5,16 @@ $connectionInfo = array("Database" => "Buchanan County P.O. System", "UID" => "s
 $conn = sqlsrv_connect($serverName, $connectionInfo);
 
 
-$venorID =$_GET["vID"];
+$venorID =strval($_GET["vID"]);
 
 if (!$conn) {
     die(print_r(sqlsrv_errors(), true));
 }
 
-$sql = "SELECT Order_ID, Item_Name FROM Order_Table WHERE Vendor_ID = '?'";
+$sql = "SELECT Order_ID, Order_Date FROM Order_Table WHERE Vendor_ID = '?'";
 $params = array($venorID);
 
-$stmt = sqlsrv_query($conn, $sql);
+$stmt = sqlsrv_query($conn, $sql,$params);
 
 if (!$stmt) {
     die(print_r(sqlsrv_errors(), true));
