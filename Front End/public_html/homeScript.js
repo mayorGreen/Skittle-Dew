@@ -18,13 +18,22 @@ function openTab(event, tabName) {
     document.getElementById(tabName).style.display = "block";
     event.currentTarget.className += "active";
 
-    if (tabName == "addOrder") {
-        getVendors(sessionStorage.getItem("savedVendor"));
+    if (tabName == "addOrder" || tabName == "createReports") {
+        getVendors(tabName, sessionStorage.getItem("savedVendor"));
     }
 }
 
-function getVendors(setTo = null) {
-    var ven = document.getElementById("vendSelect");
+function getVendors(tName, setTo = null) {
+    if (tName == "addOrder") {
+        var ven = document.getElementById("vendSelect");
+    }
+    else if (tName == "createReports") {
+        var ven = document.getElementById("reportVSelect");
+    }
+    else {
+        console.log("Something's gone horribly wrong");
+    }
+    
     ven.innerHTML = '';
 
     var vendors = [[" ", 0]];
@@ -78,11 +87,18 @@ function getVendors(setTo = null) {
 
     
 
-function onVSelect() {
-    var vendor = document.getElementById("vendSelect");
+function onVSelect(where) {
+    if (where == "order") {
+        var vendor = document.getElementById("vendSelect");
+        var form = document.getElementById("oCreate");
+    } else if (where == "report") {
+        var vendor = document.getElementById("reportVSelect");
+        var form = document.getElementById("reportCreate");
+    } else {
+        console.log("something's gone horribly wrong (onVSelect)")
+    }
+    
     sessionStorage.setItem("savedVendor", vendor.value);
-
-    var form = document.getElementById("oCreate");
 
     if (document.getElementById("vID") == null) {
         var vID = document.createElement("input");
@@ -108,15 +124,45 @@ function onVSelect() {
     }
 
 
+    if (where == "order") {
+        var itemDiv = document.getElementById("itemDiv");
+        itemDiv.innerHTML = '';
 
-    var itemDiv = document.getElementById("itemDiv");
-    itemDiv.innerHTML = '';
+        var header = document.createElement("h3");
+        header.textContent = "Items: ";
+        
+        itemDiv.appendChild(header);
+        getItems();
+    }
 
-    var header = document.createElement("h3");
-    header.textContent = "Items: ";
-    
-    itemDiv.appendChild(header);
-    getItems();
+    if (where == "report") {
+        var oDropdown = document.createElement("select");
+        oDropdown.id = "oDropdown";
+
+        var orders = [[" ", 0]];
+
+        returnAjax('../../Back End/reportGetter.php', function(data) {
+            console.log(data);
+            for (var i = 0; i < data.length; i++) { // may need to make that length -1 because it likes to act up
+                orders.push([data[i].name, data[i].id]);
+            }
+
+            console.log(orders);
+
+            for (var i = 0; i < orders.length; i++) {
+                var name = vendors[i][0];
+                var vID = vendors[i][1];
+                var element = document.createElement("option");
+                element.textContent = name;
+                element.name = "orderName";
+                element.value = vID;
+
+                oDropdown.appendChild(oDropdown);
+            }
+
+            form.append(oDropdown);
+        }, true);
+    }
 }
 
 function getItems() {

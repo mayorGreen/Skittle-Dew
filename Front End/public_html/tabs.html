@@ -27,7 +27,7 @@
             <h2>Add Order</h2>
             <form id="oCreate" method="POST" action="../../Back%20End/addOrder.php" onsubmit="return vID, uLogin, iName, oDate, oComplete, oVoid, oDescription, oQuantity, uPrice, tPrice, note">
                 <label for="vendSelect">Select a Vendor: </label>
-                <select class="form-control" id="vendSelect" onchange="onVSelect()"></select>
+                <select class="form-control" id="vendSelect" onchange="onVSelect('order')"></select>
                 <br>
                 <div id="infoDiv" visibility="invisible">
                 </div>
@@ -133,6 +133,11 @@
         </div>
         <div id="createReports" class="tabcontent">
             <h2>Generate Reports</h2>
+            <form id="reportCreate" method="POST"> <!--action="path to relevant script" onsubmit="return variables">-->
+                <label for="reportVSelect">Select a Vendor: </label>
+                <select class="form-control" id="reportVSelect" onchange="onVSelect('report')"></select>
+            </form>
+            
         </div>
         <script>
             document.getElementById("default").click();
