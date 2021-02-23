@@ -179,20 +179,11 @@ function onVSelect(where) {
             }
 
             form.append(oDropdown);
-            fillReport();
         }, true);
     }
 }
 
 function fillReport(){
-    //createCookie("oID", document.getElementById("oID").value, "0.25");
-
-    var infoDiv = document.getElementById("infoDiv");
-
-    var reportTitle = document.createElement("span");
-    reportTitle.textContent = " Report: "
-
-    infoDiv.appendChild(reportTitle);
 
 }
 
@@ -204,12 +195,12 @@ function getItems() {
             var itemName = document.createElement("input");
             itemName.type = "text";
             itemName.placeholder = "Item Name";
-            itemName.name = "iName";
+            itemName.name = "items[]iName";
 
             var desc = document.createElement("input");
             desc.type = "text";
             desc.placeholder = "Item Description";
-            desc.name = "oDescription";
+            desc.name = "items[]oDescription";
 
             var quantity = document.createElement("input");
             quantity.id = "quantity";
@@ -218,7 +209,7 @@ function getItems() {
             quantity.value = "1";
             quantity.min = "1";
             quantity.placeholder = "Quantity";
-            quantity.name = "oQuantity";
+            quantity.name = "items[]oQuantity";
 
             var price = document.createElement("input");
             price.id = "price";
@@ -226,18 +217,18 @@ function getItems() {
             price.min = "1";
             price.step = "1";
             price.placeholder = "Price";
-            price.name = "uPrice";
+            price.name = "items[]uPrice";
 
             var totalPrice = document.createElement("input");
             totalPrice.id = "totalPrice";
             totalPrice.type = "number";
             totalPrice.placeholder = "Total Price";
-            totalPrice.name = "tPrice";
+            totalPrice.name = "items[]tPrice";
 
             var notes = document.createElement("input");
             notes.type = "text";
             notes.placeholder = "Notes";
-            notes.name = "note";
+            notes.name = "items[]note";
 
             newDiv.appendChild(itemName);
             newDiv.appendChild(desc);
@@ -307,54 +298,6 @@ function getItems() {
         infoDiv.visibility = "visible";
     }
 
-    var itemName = document.createElement("input");
-    itemName.type = "text";
-    itemName.placeholder = "Item Name";
-    itemName.name = "iName";
-
-    var desc = document.createElement("input");
-    desc.type = "text";
-    desc.placeholder = "Item Description";
-    desc.name = "oDescription";
-
-    var quantity = document.createElement("input");
-    quantity.id = "quantity";
-    quantity.type = "number";
-    quantity.step = "1";
-    quantity.value = "1";
-    quantity.min = "1";
-    quantity.placeholder = "Quantity";
-    quantity.name = "oQuantity";
-
-    var price = document.createElement("input");
-    price.id = "price";
-    price.type = "number";
-    price.min = "1";
-    price.step = "any";
-    price.placeholder = "Price";
-    price.name = "uPrice";
-
-    var totalPrice = document.createElement("input");
-    totalPrice.id = "totalPrice";
-    totalPrice.type = "number";
-    totalPrice.placeholder = "Total Price";
-    totalPrice.name = "tPrice";
-
-    var notes = document.createElement("input");
-    notes.type = "text";
-    notes.placeholder = "Notes";
-    notes.name = "note";
-
-
-    liDiv.appendChild(itemName);
-    liDiv.appendChild(desc);
-    liDiv.appendChild(quantity);
-    liDiv.appendChild(price);
-    liDiv.appendChild(totalPrice);
-    liDiv.appendChild(notes);
-
-    liDiv.appendChild(document.createElement("br"));
-    itemDiv.append(liDiv);
 
     var buttonsDiv = document.getElementById("buttonsDiv");
 

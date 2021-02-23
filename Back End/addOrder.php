@@ -20,7 +20,6 @@ if (isset($_POST['submit']))
     $orderDate1 = strval($_POST[oDate]);
     $orderDate = str_replace('T',' ',$orderDate1);
 
-    echo $orderDate;
     //represented by a bit (1 or 0) and should be identified as a yes or no drop down.
     //If orderComplete is yes then orderVoid must be no and vice versus
     $orderComplete = boolval($_POST[oComplete]);
@@ -31,14 +30,6 @@ if (isset($_POST['submit']))
 
     if($order_void == TRUE) $order_void = 1;
     else $order_void = 0;
-
-    //Variables for Line_Item_Table
-    $itemName = strval($_POST[iName]);
-    $orderDescription = strval($_POST[oDescription]);
-    $orderQuantity = intval($_POST[oQuantity]);
-    $unitPrice = doubleval($_POST[uPrice]);
-    $totalPrice = doubleval($_POST[tPrice]);
-    $notes = strval($_POST[note]);
 
 
     //Sql for Order_Table
@@ -54,6 +45,7 @@ if (isset($_POST['submit']))
     }
 
 
+
     //Select Order_ID from Order_Table
     $sql3 = "Select * From Order_Table where Order_Date = ?";
     $param = array($orderDate);
@@ -66,16 +58,36 @@ if (isset($_POST['submit']))
         $id = $row['Order_ID'];
     }
 
-    //SQL for Line_Item_Table
-    $sql2 = "SET ANSI_WARNINGS OFF Insert INTO Line_Item_Table(Order_ID,Item_Name,
+    //Code to iterate through item array and assign them to variables to submit to line item table
+    $j = 0;
+
+    for($i = 0;$i<count($_POST['items'])/6;$i++){
+
+        //Variables for Line_Item_Table
+        $itemName = strval($_POST[items][$j]);
+        $j++;
+        $orderDescription = strval($_POST[items][$j]);
+        $j++;
+        $orderQuantity = intval($_POST[items][$j]);
+        $j++;
+        $unitPrice = doubleval($_POST[items][$j]);
+        $j++;
+        $totalPrice = doubleval($_POST[items][$j]);
+        $j++;
+        $notes = strval($_POST[items][$j]);
+        $j++;
+
+
+        //SQL for Line_Item_Table
+        $sql2 = "SET ANSI_WARNINGS OFF Insert INTO Line_Item_Table(Order_ID,Item_Name,
         Item_Description,Item_Quantity,Item_Price,Total_Price,Notes)
-        VALUES(CONVERT(uniqueidentifier,?),?,?,?,?,?,?) SET ANSI_WARNINGS ON";
-    $params2 = array($id,$itemName,$orderDescription,$orderQuantity,$unitPrice,$totalPrice,$notes);
+        VALUES(CONVERT(uniqueidentifier,'$id'),'".$itemName."','".$orderDescription."','".$orderQuantity."','".$unitPrice."','".$totalPrice."','".$notes."') SET ANSI_WARNINGS ON";
 
-    $query2 = sqlsrv_query($conn, $sql2, $params2);
+        $query2 = sqlsrv_query($conn, $sql2);
 
-    if (!$query2) {
-        die(print_r(sqlsrv_errors(), true));
+        if (!$query2) {
+            die(print_r(sqlsrv_errors(), true));
+        }
     }
 
     sqlsvr_close($conn);
