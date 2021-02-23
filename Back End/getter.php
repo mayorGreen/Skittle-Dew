@@ -17,14 +17,10 @@ if (!$stmt) {
     die(print_r(sqlsrv_errors(), true));
 }
 
-$nameArray = array();
-
 echo "[";
 
 while($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
 {
-    //echo json_encode($row['Vendor_ID']);
-    //echo json_encode($row['Vendor_Name']);
     $tempObj->id = $row['Vendor_ID'];
     $tempObj->name = $row['Vendor_Name'];
 

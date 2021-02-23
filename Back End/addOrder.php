@@ -16,6 +16,7 @@ if (isset($_POST['submit']))
     //Variables for Order_Table
     $vendorID = ($_POST[vID]);
     $userLogin = strval($_POST[uLogin]);
+    $orderName = strval($_POST[oName]);
     $orderDate1 = strval($_POST[oDate]);
     $orderDate = str_replace('T',' ',$orderDate1);
 
@@ -41,10 +42,10 @@ if (isset($_POST['submit']))
 
 
     //Sql for Order_Table
-    $sql1 = "SET ANSI_WARNINGS OFF Insert INTO Order_Table(Order_ID,Vendor_ID,User_Login,
+    $sql1 = "SET ANSI_WARNINGS OFF Insert INTO Order_Table(Order_ID,Vendor_ID,User_Login,Order_Name,
         Order_Date,Order_Complete,Order_Void,Total_Price)
-        VALUES(NEWID(),CONVERT(uniqueidentifier,?),?,?,?,?,?) SET ANSI_WARNINGS ON";
-    $params1 = array($vendorID,$userLogin,$orderDate,$orderComplete,$order_void,$totalPrice);
+        VALUES(NEWID(),CONVERT(uniqueidentifier,?),?,?,?,?,?,?) SET ANSI_WARNINGS ON";
+    $params1 = array($vendorID,$userLogin,$orderName,$orderDate,$orderComplete,$order_void,$totalPrice);
 
     $query1 = sqlsrv_query($conn, $sql1, $params1);
 

@@ -5,31 +5,30 @@ $connectionInfo = array("Database" => "Buchanan County P.O. System", "UID" => "s
 $conn = sqlsrv_connect($serverName, $connectionInfo);
 
 
-$venorID =strval($_GET["vID"]);
+$venorID = $_COOKIE["vID"];
+
 
 if (!$conn) {
     die(print_r(sqlsrv_errors(), true));
 }
 
-$sql = "SELECT Order_ID, Order_Date FROM Order_Table WHERE Vendor_ID = '?'";
+
+$sql = "SELECT Order_ID, Order_Name FROM Order_Table WHERE Vendor_ID = ?";
 $params = array($venorID);
 
-$stmt = sqlsrv_query($conn, $sql,$params);
+
+$stmt = sqlsrv_query($conn, $sql, $params);
 
 if (!$stmt) {
     die(print_r(sqlsrv_errors(), true));
 }
 
-$nameArray = array();
-
 echo "[";
 
 while($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
 {
-    //echo json_encode($row['Vendor_ID']);
-    //echo json_encode($row['Vendor_Name']);
     $tempObj->id = $row['Order_ID'];
-    $tempObj->name = $row['Item_Name'];
+    $tempObj->name = $row['Order_Name'];
 
     $myJSON = json_encode($tempObj);
     echo $myJSON;

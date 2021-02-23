@@ -23,6 +23,44 @@ function openTab(event, tabName) {
     }
 }
 
+function returnAjax(url, callbackFunc, called = false) {
+    if (called == true) {
+        httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) { // correct codes
+                // process server response
+                console.log(this);
+                console.log(this.responseText);
+                try {
+                    var data = JSON.parse(httpRequest.responseText);
+                } catch(err) {
+                    console.log(err.message + " in " + httpRequest.responseText);
+                    return;
+                }
+                callbackFunc(data);
+            }
+        };
+        httpRequest.open("GET", url, true);
+        httpRequest.send();
+    }
+}
+
+function createCookie(name, value, days) {
+    var expires;
+
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toGMTString();
+    }
+    else {
+        expires = "";
+    }
+
+    document.cookie = escape(name) + "=" +
+        escape(value) + expires + "; path=/";
+}
+
 function getVendors(tName, setTo = null) {
     if (tName == "addOrder") {
         var ven = document.getElementById("vendSelect");
@@ -33,34 +71,12 @@ function getVendors(tName, setTo = null) {
     else {
         console.log("Something's gone horribly wrong");
     }
-    
+
     ven.innerHTML = '';
 
     var vendors = [[" ", 0]];
-    
-    function returnAjax(url, callbackFunc, called = false) {
-        if (called == true) {
-            httpRequest = new XMLHttpRequest();
-            httpRequest.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) { // correct codes
-                    // process server response
-                    //console.log(this);
-                    //console.log(this.responseText);
-                    try {
-                        var data = JSON.parse(httpRequest.responseText);
-                    } catch(err) {
-                        console.log(err.message + " in " + httpRequest.responseText);
-                        return;
-                    }
-                    callbackFunc(data);
-                }
-            };
-            httpRequest.open("GET", url, true);
-            httpRequest.send();
-        }
-    }
 
-    returnAjax('../../Back End/getter.php', function(data) {
+    returnAjax("../../Back End/getter.php", function(data) {
         // console.log(data); // debug
         for (var i = 0; i < data.length-1; i++) {
             vendors.push([data[i].name, data[i].id]);
@@ -85,7 +101,7 @@ function getVendors(tName, setTo = null) {
     }, true);
 }
 
-    
+
 
 function onVSelect(where) {
     if (where == "order") {
@@ -97,7 +113,7 @@ function onVSelect(where) {
     } else {
         console.log("something's gone horribly wrong (onVSelect)")
     }
-    
+
     sessionStorage.setItem("savedVendor", vendor.value);
 
     if (document.getElementById("vID") == null) {
@@ -130,7 +146,7 @@ function onVSelect(where) {
 
         var header = document.createElement("h3");
         header.textContent = "Items: ";
-        
+
         itemDiv.appendChild(header);
         getItems();
     }
@@ -141,6 +157,8 @@ function onVSelect(where) {
 
         var orders = [[" ", 0]];
 
+        createCookie("vID", document.getElementById("vID").value, "0.25");
+
         returnAjax('../../Back End/reportGetter.php', function(data) {
             console.log(data);
             for (var i = 0; i < data.length; i++) { // may need to make that length -1 because it likes to act up
@@ -150,19 +168,32 @@ function onVSelect(where) {
             console.log(orders);
 
             for (var i = 0; i < orders.length; i++) {
-                var name = vendors[i][0];
-                var vID = vendors[i][1];
+                var name = orders[i][0];
+                var oID = orders[i][1];
                 var element = document.createElement("option");
                 element.textContent = name;
                 element.name = "orderName";
-                element.value = vID;
+                element.value = oID;
 
-                oDropdown.appendChild(oDropdown);
+                oDropdown.appendChild(element);
             }
 
             form.append(oDropdown);
+            fillReport();
         }, true);
     }
+}
+
+function fillReport(){
+    //createCookie("oID", document.getElementById("oID").value, "0.25");
+
+    var infoDiv = document.getElementById("infoDiv");
+
+    var reportTitle = document.createElement("span");
+    reportTitle.textContent = " Report: "
+
+    infoDiv.appendChild(reportTitle);
+
 }
 
 function getItems() {
@@ -214,7 +245,7 @@ function getItems() {
             newDiv.appendChild(price);
             newDiv.appendChild(totalPrice);
             newDiv.appendChild(notes);
-            
+
             newDiv.appendChild(document.createElement("br"));
 
             itemDiv.append(newDiv);
@@ -232,6 +263,12 @@ function getItems() {
         userName.placeholder = "Username";
         userName.id = "user_name";
         userName.name = "uLogin";
+
+        var orderName = document.createElement("input");
+        orderName.type = "text";
+        orderName.placeholder = "Order Name";
+        orderName.id = "order_name";
+        orderName.name = "oName";
 
 
         var utc = new Date().toJSON().slice(0,16);
@@ -257,9 +294,10 @@ function getItems() {
         orderLabel.textContent = " Order Complete: "
 
         var voidLabel = document.createElement("span");
-        voidLabel.textContent = " Void Complete: "
+        voidLabel.textContent = " Order Void: "
 
         infoDiv.appendChild(userName);
+        infoDiv.appendChild(orderName);
         infoDiv.appendChild(orderDate);
         infoDiv.appendChild(orderLabel);
         infoDiv.appendChild(orderComplete);
@@ -314,7 +352,7 @@ function getItems() {
     liDiv.appendChild(price);
     liDiv.appendChild(totalPrice);
     liDiv.appendChild(notes);
-    
+
     liDiv.appendChild(document.createElement("br"));
     itemDiv.append(liDiv);
 
