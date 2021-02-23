@@ -19,10 +19,10 @@ if (isset($_POST['submit'])) {
     $rows = sqlsrv_has_rows($result);
     if ($rows == 1) {
         //echo "Success";
-        Header( 'Location: success.php?success=1' );
+        Header( 'Location: sucessLogin.php?success=1' );
     }
     else{
-        Header( 'Location: failed.php?failed=1' );
+        Header( 'Location: failedLogin.php?failed=1' );
         //echo "Invalid username/password";
         //echo "Row count = $rows";
     }

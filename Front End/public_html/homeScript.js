@@ -76,7 +76,7 @@ function getVendors(tName, setTo = null) {
 
     var vendors = [[" ", 0]];
 
-    returnAjax("../../Back End/getter.php", function(data) {
+    returnAjax("../../Back End/vendorGetter.php", function(data) {
         // console.log(data); // debug
         for (var i = 0; i < data.length-1; i++) {
             vendors.push([data[i].name, data[i].id]);
@@ -159,7 +159,7 @@ function onVSelect(where) {
 
         createCookie("vID", document.getElementById("vID").value, "0.25");
 
-        returnAjax('../../Back End/reportGetter.php', function(data) {
+        returnAjax('../../Back End/orderGetter.php', function(data) {
             console.log(data);
             for (var i = 0; i < data.length; i++) { // may need to make that length -1 because it likes to act up
                 orders.push([data[i].name, data[i].id]);
