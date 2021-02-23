@@ -24,7 +24,7 @@ if (isset($_POST['submit']))
     //If orderComplete is yes then orderVoid must be no and vice versus
     $orderComplete = boolval($_POST[oComplete]);
     $order_void = boolval($_POST[oVoid]);
-    $totalPrice = doubleval($_POST[tprice]);
+    $totalPrice = doubleval($_POST[totalCost]);
     if($orderComplete == TRUE) $orderComplete = 1;
     else $orderComplete = 0;
 

@@ -187,10 +187,44 @@ function fillReport(){
 
 }
 
+
+function itemTotal()
+{
+    var price = document.getElementsByName('items[]uPrice');
+    var quantity = document.getElementsByName('items[]oQuantity');
+    var total_Price = 0;
+
+    for (var i = 0; i < price.length; i++) {
+        var a = price[i].value;
+        var b = quantity[i].value;
+        total_Price = parseFloat(a)*parseFloat(b);
+
+        var divobj = document.getElementsByName('items[]tPrice');
+        divobj[i].value = total_Price.toFixed(2);
+    }
+}
+
+function orderTotal()
+{
+    var price = document.getElementsByName('items[]tPrice');
+    var quantity = document.getElementsByName('items[]oQuantity');
+    var total_Price = 0;
+
+    for (var i = 0; i < price.length; i++) {
+        var a = price[i].value;
+        //var b = quantity[i].value;
+        total_Price += (parseFloat(a));
+
+        var divobj = document.getElementById('totalCost');
+        divobj.value = total_Price.toFixed(2);
+    }
+}
+
 function getItems() {
     function newItems(called = false) { // for add item button
         if (called == true) {
             newDiv = document.createElement("div");
+
 
             var itemName = document.createElement("input");
             itemName.type = "text";
@@ -210,18 +244,21 @@ function getItems() {
             quantity.min = "1";
             quantity.placeholder = "Quantity";
             quantity.name = "items[]oQuantity";
+            quantity.oninput = function() {itemTotal(), orderTotal()};
 
             var price = document.createElement("input");
             price.id = "price";
             price.type = "number";
             price.min = "1";
-            price.step = "1";
+            price.step = ".01";
             price.placeholder = "Price";
             price.name = "items[]uPrice";
+            price.oninput = function() {itemTotal(), orderTotal()};
 
             var totalPrice = document.createElement("input");
             totalPrice.id = "totalPrice";
             totalPrice.type = "number";
+            totalPrice.step = ".01"
             totalPrice.placeholder = "Total Price";
             totalPrice.name = "items[]tPrice";
 
@@ -246,7 +283,7 @@ function getItems() {
 
     var infoDiv = document.getElementById("infoDiv");
     var itemDiv = document.getElementById("itemDiv");
-    var liDiv = document.createElement("div");
+    //var liDiv = document.createElement("div");
 
     if (infoDiv.visibility != "visible") {
         var userName = document.createElement("input");
@@ -302,6 +339,17 @@ function getItems() {
     var buttonsDiv = document.getElementById("buttonsDiv");
 
     if (buttonsDiv.visibility != "visible") {
+
+        var costHeader = document.createElement("h3");
+        costHeader.textContent = "Order Total: ";
+
+        var totalCost = document.createElement("input");
+        totalCost.type = "number";
+        totalCost.id = "totalCost";
+        totalCost.step = ".01";
+        totalCost.placeholder = "Order Total";
+        totalCost.name = "totalCost";
+
         var addItemButton = document.createElement("button");
         addItemButton.type = "button";
         addItemButton.textContent = "Click to add new item";
@@ -312,6 +360,10 @@ function getItems() {
         finalizeButton.value = "Finalize Item Selection";
         finalizeButton.name = "submit";
 
+        buttonsDiv.append(costHeader);
+        buttonsDiv.append(totalCost);
+        buttonsDiv.append(document.createElement("br"));
+        buttonsDiv.append(document.createElement("br"));
         buttonsDiv.append(addItemButton);
         buttonsDiv.append(finalizeButton);
 
