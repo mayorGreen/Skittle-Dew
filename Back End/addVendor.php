@@ -15,7 +15,6 @@ if(isset($_POST['submit']))
 
     //Vendor Variables
     $name = strval($_POST[vname]);
-    $contract = intval($_POST[vcontract]);
     $address = strval($_POST[vaddress]);
     $city = strval($_POST[vcity]);
     $state = strval($_POST[vstate]);
@@ -24,9 +23,9 @@ if(isset($_POST['submit']))
     $email = strval($_POST[vmail]);
 
     //SQL to add the Vendor to the vendor_table
-    $sql = "SET ANSI_WARNINGS OFF SET IDENTITY_INSERT Vendor_Table ON Insert INTO Vendor_Table(Vendor_ID,Vendor_Name,Vendor_Contract_Number,Vendor_Address,Vendor_City,Vendor_State,Vendor_Zip_Code,Vendor_Phone,Vendor_Email) 
-    VALUES(NEWID(),?,?,?,?,?,?,?,?) SET ANSI_WARNINGS ON";
-    $params = array($name,$contract,$address,$city,$state,$zip,$phone,$email);
+    $sql = "SET ANSI_WARNINGS OFF SET IDENTITY_INSERT Vendor_Table ON Insert INTO Vendor_Table(Vendor_ID,Vendor_Name,Vendor_Address,Vendor_City,Vendor_State,Vendor_Zip_Code,Vendor_Phone,Vendor_Email) 
+    VALUES(NEWID(),?,?,?,?,?,?,?) SET ANSI_WARNINGS ON";
+    $params = array($name,$address,$city,$state,$zip,$phone,$email);
 
     $query = sqlsrv_query($conn,$sql,$params);
 

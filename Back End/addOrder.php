@@ -14,9 +14,9 @@ if (isset($_POST['submit']))
 
 
     //Variables for Order_Table
+    $orderID =uniqid(); // used to create a unique id to query order table to insert line items
     $vendorID = ($_POST[vID]);
     $userLogin = strval($_POST[uLogin]);
-    $orderName = strval($_POST[oName]);
     $orderDate1 = strval($_POST[oDate]);
     $orderDate = str_replace('T',' ',$orderDate1);
 
@@ -25,6 +25,8 @@ if (isset($_POST['submit']))
     $orderComplete = boolval($_POST[oComplete]);
     $order_void = boolval($_POST[oVoid]);
     $totalPrice = doubleval($_POST[totalCost]);
+    $notes = strval($_POST[note]);
+
     if($orderComplete == TRUE) $orderComplete = 1;
     else $orderComplete = 0;
 
@@ -33,10 +35,10 @@ if (isset($_POST['submit']))
 
 
     //Sql for Order_Table
-    $sql1 = "SET ANSI_WARNINGS OFF Insert INTO Order_Table(Order_ID,Vendor_ID,User_Login,Order_Name,
-        Order_Date,Order_Complete,Order_Void,Total_Price)
-        VALUES(NEWID(),CONVERT(uniqueidentifier,?),?,?,?,?,?,?) SET ANSI_WARNINGS ON";
-    $params1 = array($vendorID,$userLogin,$orderName,$orderDate,$orderComplete,$order_void,$totalPrice);
+    $sql1 = "SET ANSI_WARNINGS OFF Insert INTO Order_Table(Order_ID,Vendor_ID,User_Login,
+        Order_Date,Order_Complete,Order_Void,Total_Price,Notes)
+        VALUES(?,CONVERT(uniqueidentifier,?),?,?,?,?,?,?) SET ANSI_WARNINGS ON";
+    $params1 = array($orderID,$vendorID,$userLogin,$orderDate,$orderComplete,$order_void,$totalPrice,$notes);
 
     $query1 = sqlsrv_query($conn, $sql1, $params1);
 
@@ -45,13 +47,10 @@ if (isset($_POST['submit']))
     }
 
 
-
     //Select Order_ID from Order_Table
-    $sql3 = "Select * From Order_Table where Order_Date = ?";
-    $param = array($orderDate);
+    $sql3 = "Select * From Order_Table where Order_ID = ?";
+    $param = array($orderID);
     $query = sqlsrv_query($conn,$sql3, $param);
-
-    $id = '';
 
     while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
     {
@@ -64,6 +63,8 @@ if (isset($_POST['submit']))
     for($i = 0;$i<count($_POST['items'])/6;$i++){
 
         //Variables for Line_Item_Table
+        $contract_Number = intval($_POST[items][$j]);
+        $j++;
         $itemName = strval($_POST[items][$j]);
         $j++;
         $orderDescription = strval($_POST[items][$j]);
@@ -74,14 +75,11 @@ if (isset($_POST['submit']))
         $j++;
         $totalPrice = doubleval($_POST[items][$j]);
         $j++;
-        $notes = strval($_POST[items][$j]);
-        $j++;
-
 
         //SQL for Line_Item_Table
-        $sql2 = "SET ANSI_WARNINGS OFF Insert INTO Line_Item_Table(Order_ID,Item_Name,
-        Item_Description,Item_Quantity,Item_Price,Total_Price,Notes)
-        VALUES(CONVERT(uniqueidentifier,'$id'),'".$itemName."','".$orderDescription."','".$orderQuantity."','".$unitPrice."','".$totalPrice."','".$notes."') SET ANSI_WARNINGS ON";
+        $sql2 = "SET ANSI_WARNINGS OFF Insert INTO Line_Item_Table(Order_ID,Contract_Number,Item_Name,
+        Item_Description,Item_Quantity,Item_Price,Total_Price)
+        VALUES('$id','".$contract_Number."','".$itemName."','".$orderDescription."','".$orderQuantity."','".$unitPrice."','".$totalPrice."') SET ANSI_WARNINGS ON";
 
         $query2 = sqlsrv_query($conn, $sql2);
 

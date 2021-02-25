@@ -225,6 +225,10 @@ function getItems() {
         if (called == true) {
             newDiv = document.createElement("div");
 
+            var contractNumber = document.createElement("input");
+            contractNumber.type = "number";
+            contractNumber.placeholder = "Contract Number";
+            contractNumber.name = "items[]cNumber";
 
             var itemName = document.createElement("input");
             itemName.type = "text";
@@ -262,17 +266,12 @@ function getItems() {
             totalPrice.placeholder = "Total Price";
             totalPrice.name = "items[]tPrice";
 
-            var notes = document.createElement("input");
-            notes.type = "text";
-            notes.placeholder = "Notes";
-            notes.name = "items[]note";
-
+            newDiv.appendChild(contractNumber);
             newDiv.appendChild(itemName);
             newDiv.appendChild(desc);
             newDiv.appendChild(quantity);
             newDiv.appendChild(price);
             newDiv.appendChild(totalPrice);
-            newDiv.appendChild(notes);
 
             newDiv.appendChild(document.createElement("br"));
 
@@ -291,12 +290,6 @@ function getItems() {
         userName.placeholder = "Username";
         userName.id = "user_name";
         userName.name = "uLogin";
-
-        var orderName = document.createElement("input");
-        orderName.type = "text";
-        orderName.placeholder = "Order Name";
-        orderName.id = "order_name";
-        orderName.name = "oName";
 
 
         var utc = new Date().toJSON().slice(0,16);
@@ -324,13 +317,20 @@ function getItems() {
         var voidLabel = document.createElement("span");
         voidLabel.textContent = " Order Void: "
 
+
+        var notes = document.createElement("input");
+        notes.type = "text";
+        notes.placeholder = "Notes";
+        notes.name = "note";
+
         infoDiv.appendChild(userName);
-        infoDiv.appendChild(orderName);
         infoDiv.appendChild(orderDate);
         infoDiv.appendChild(orderLabel);
         infoDiv.appendChild(orderComplete);
         infoDiv.appendChild(voidLabel);
         infoDiv.appendChild(orderVoid);
+        infoDiv.appendChild(notes);
+
 
         infoDiv.visibility = "visible";
     }
@@ -391,7 +391,7 @@ function validateZip(zip) {
     }
 }
 
-function newVendor(vName, vcontract, vMail, vPhone, vAddress, vCity, vState, vZip) {
+function newVendor(vName, vMail, vPhone, vAddress, vCity, vState, vZip) {
     var warn = document.getElementById("avWarn");
     warn.style.visibility = "hidden";
 
@@ -410,15 +410,15 @@ function newVendor(vName, vcontract, vMail, vPhone, vAddress, vCity, vState, vZi
         warn.style.visibility = "visible";
         return false;
     }
-
+/*
     // validate Email Address ending
     vMailSuffix = vMail.value.substr(vMail.value.length - 4);
     for (var i = 0; i < validEmailSuffixes.length; i++){
-        if (vMailSuffix == validEmailSuffixes[i]){
+        if (vMailSuffix === validEmailSuffixes[i]){
             break
         }
     }
-    if (i == validEmailSuffixes.length) {
+    if (i === validEmailSuffixes.length) {
         warn.textContent = "Invalid Email Address!";
         warn.style.visibility = "visible";
         return false;
@@ -426,7 +426,7 @@ function newVendor(vName, vcontract, vMail, vPhone, vAddress, vCity, vState, vZi
 
     // validate @ symbol present in email
     for (var i = 0; i < vMail.value.length; i++){
-        if (vMail.value[i] == '@'){
+        if (vMail.value[i] === '@'){
             break
         }
     }
@@ -435,7 +435,7 @@ function newVendor(vName, vcontract, vMail, vPhone, vAddress, vCity, vState, vZi
         warn.style.visibility = "visible";
         return false;
     }
-
+*/
     // validate phone number
     phoneValid = validatePhone(vPhone.value);
     if (phoneValid == false) {
