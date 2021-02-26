@@ -132,7 +132,15 @@
             <h2>Generate Reports</h2>
             <form id="reportCreate" method="POST"> <!--action="path to relevant script" onsubmit="return variables">-->
                 <label for="reportVSelect">Select a Vendor: </label>
-                <select class="form-control" id="reportVSelect" onchange="onVSelect('report')"></select>
+                <select class="form-control" id="reportVSelect"></select>
+                <br>
+                <label for="date1">From:</label>
+                <input id="date1" type="date">
+                <label for="date2">To:</label>
+                <input id="date2" type="date">
+                <br>
+                <input type="submit" name="reportSubmit" value="Get Report">
+                <p id="avWarn" style="color: #ff0000; visibility: hidden"></p> <!--TODO: add js validation rules for reportCreate form-->
             </form>
             
         </div>

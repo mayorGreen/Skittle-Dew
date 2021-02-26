@@ -20,6 +20,20 @@ function openTab(event, tabName) {
 
     if (tabName == "addOrder" || tabName == "createReports") {
         getVendors(tabName, sessionStorage.getItem("savedVendor"));
+        if(tabName == "createReports") {
+            var toDate = document.getElementById("date2");
+            var date = new Date();
+            var day = date.getDate().toString();
+            var month = (date.getMonth()+1).toString();
+            if (day.length <= 1) {
+                day = "0" + day;
+            }
+            if (month.length <= 1) {
+                month = "0" + month;
+            }
+            // console.log(date.getFullYear() + '-' + month + '-' + day);
+            toDate.value = date.getFullYear() + '-' + month + '-' + day;
+        }
     }
 }
 
