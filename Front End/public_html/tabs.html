@@ -132,7 +132,7 @@
             <h2>Generate Reports</h2>
             <form id="reportCreate" method="POST" action="../../Back%20End/orderGetter.php" onsubmit="return vID, date1, date2"> <!--action="path to relevant script" onsubmit="return variables">-->
                 <label for="reportVSelect">Select a Vendor: </label>
-                <select class="form-control" id="reportVSelect"></select>
+                <select class="form-control" id="reportVSelect" onchange="onVSelect('report')"></select>
                 <br>
                 <label for="date1">From:</label>
                 <input id="date1" type="date" name="date1">

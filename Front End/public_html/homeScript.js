@@ -166,13 +166,13 @@ function onVSelect(where) {
     }
 
     if (where == "report") {
-        var oDropdown = document.createElement("select");
-        oDropdown.id = "oDropdown";
+        //var oDropdown = document.createElement("select");
+        //oDropdown.id = "oDropdown";
 
-        var orders = [[" ", 0]];
+        //var orders = [[" ", 0]];
 
         createCookie("vID", document.getElementById("vID").value, "0.25");
-
+/*
         returnAjax('../../Back End/orderGetter.php', function(data) {
             console.log(data);
             for (var i = 0; i < data.length; i++) { // may need to make that length -1 because it likes to act up
@@ -193,7 +193,8 @@ function onVSelect(where) {
             }
 
             form.append(oDropdown);
-        }, true);
+ */
+      //  }, true);
     }
 }
 
