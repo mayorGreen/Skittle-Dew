@@ -10,8 +10,8 @@ if (!$conn) {
 }
 
 $vendorID = $_COOKIE["vID"];
-$orderDate1 = strval($_POST["date1"]);
-$orderDate2 = strval($_POST["date2"]);
+$orderDate1 = $_COOKIE["date1"];
+$orderDate2 = $_COOKIE["date2"];
 
 
 echo $vendorID;

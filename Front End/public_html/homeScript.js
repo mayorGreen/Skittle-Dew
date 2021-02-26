@@ -118,14 +118,17 @@ function getVendors(tName, setTo = null) {
 
 
 function onVSelect(where) {
-    if (where == "order") {
-        var vendor = document.getElementById("vendSelect");
-        var form = document.getElementById("oCreate");
-    } else if (where == "report") {
-        var vendor = document.getElementById("reportVSelect");
-        var form = document.getElementById("reportCreate");
-    } else {
-        console.log("something's gone horribly wrong (onVSelect)")
+    switch(where) {
+        case "order":
+            var vendor = document.getElementById("vendSelect");
+            var form = document.getElementById("oCreate");
+            break;
+        case "report":
+            var vendor = document.getElementById("reportVSelect");
+            var form = document.getElementById("reportCreate");
+            break;
+        default:
+            console.log("something's gone horribly wrong (onVSelect)");
     }
 
     sessionStorage.setItem("savedVendor", vendor.value);
@@ -166,15 +169,16 @@ function onVSelect(where) {
     }
 
     if (where == "report") {
-        //var oDropdown = document.createElement("select");
-        //oDropdown.id = "oDropdown";
-
-        //var orders = [[" ", 0]];
+        var orderInfo = document.getElementById("formInfo");
 
         createCookie("vID", document.getElementById("vID").value, "0.25");
-/*
+        createCookie("date1", document.getElementById("date1").value, "0.25");
+        createCookie("date2", document.getElementById("date2").value, "0.25");
+
         returnAjax('../../Back End/orderGetter.php', function(data) {
             console.log(data);
+            orderInfo.textContent = data;
+            /*
             for (var i = 0; i < data.length; i++) { // may need to make that length -1 because it likes to act up
                 orders.push([data[i].name, data[i].id]);
             }
@@ -189,12 +193,11 @@ function onVSelect(where) {
                 element.name = "orderName";
                 element.value = oID;
 
-                oDropdown.appendChild(element);
-            }
+                oDropdown.appendChild(element); 
+            } */
 
-            form.append(oDropdown);
- */
-      //  }, true);
+            orderInfo.visibility = "visible";
+        }, true);
     }
 }
 
