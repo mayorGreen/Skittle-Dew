@@ -14,15 +14,10 @@ $orderDate1 = $_COOKIE["date1"];
 $orderDate2 = $_COOKIE["date2"];
 
 
-echo $vendorID;
-echo $orderDate1;
-echo $orderDate2;
-
-
 $sql = "SELECT Order_ID, Total_Price, Order_Complete, Order_Void FROM Order_Table WHERE Vendor_ID = ? AND Order_Date Between ? AND ? ";
 $params = array($vendorID,$orderDate1,$orderDate2);
 
-echo var_dump($params);
+//echo var_dump($params);
 
 $stmt = sqlsrv_query($conn, $sql, $params);
 
@@ -58,7 +53,7 @@ else {$complete = 'No'; $void = 'No';}
 
 
 //Uneeded echo statemement just testing if all the data was being filled.
-echo "The order ID is ".$id2. " the total order cost is: $".$orderPrice." order complete: ".$complete." order void: ".$void." order in progress: **********";
+//echo "The order ID is ".$id2. " the total order cost is: $".$orderPrice." order complete: ".$complete." order void: ".$void." **********";
 
 
 $sql2 = "Select * FROM Line_Item_Table WHERE Order_ID = ?";
