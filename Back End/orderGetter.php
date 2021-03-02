@@ -10,11 +10,12 @@ if (!$conn) {
 }
 
 $vendorID = $_COOKIE["vID"];
+$vendorName = $_COOKIE["vName"];
 $orderDate1 = $_COOKIE["date1"];
 $orderDate2 = $_COOKIE["date2"];
+$vendorTotal = 0.0;
 
-
-$sql = "SELECT Order_ID, Total_Price, Order_Complete, Order_Void FROM Order_Table WHERE Vendor_ID = ? AND Order_Date Between ? AND ? ";
+$sql = "SELECT Order_ID FROM Order_Table WHERE Vendor_ID = ? AND Order_Date Between ? AND ? ";
 $params = array($vendorID,$orderDate1,$orderDate2);
 
 //echo var_dump($params);
@@ -34,27 +35,7 @@ if (!$stmt) {
 while($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
 {
     $id2 = $row['Order_ID'];
-    $orderPrice = $row['Total_Price'];
-    $orderComplete = $row['Order_Complete'];
-    $orderVoid = $row['Order_Void'];
 }
-
-
-//This elif statement will return yes and no values for the binary values of order void or complete. We should change these to yes and no so that the client and end user can easily tell
-//if an order has been completed or not
-
-if($orderComplete == 1)
-{
-    $complete = 'Yes';
-    $void = 'No';
-
-} elseif ($orderVoid == 1){ $complete = 'No'; $void = 'Yes';}
-else {$complete = 'No'; $void = 'No';}
-
-
-//Uneeded echo statemement just testing if all the data was being filled.
-//echo "The order ID is ".$id2. " the total order cost is: $".$orderPrice." order complete: ".$complete." order void: ".$void." **********";
-
 
 $sql2 = "Select * FROM Line_Item_Table WHERE Order_ID = ?";
 $params2 = array($id2);
@@ -65,30 +46,111 @@ if (!$stmt2) {
     die(print_r(sqlsrv_errors(), true));
 }
 
+$html1 = "<html> <head> <style>
+table {font-family: arial, sans-serif; border-collapse: collapse; width: 100%;}
+td, th { border: 1px solid #dddddd; text-align: center; padding: 4px;}
+tr:nth-child() {background-color: #dddddd;}
+</style>
+</head>
+<body>
+<div id='info'>
+<h2>Report for $vendorName</h2>
+<h3>Between $orderDate1 and $orderDate2</h3>
+</div>
+<div id='tab'>
+<table>
+  <tr>
+    <th>Line Item</th>
+    <th>Contract</th>
+    <th>Item Name</th>
+    <th>Item Description</th>
+    <th>Qty</th>
+    <th>Unit Price</th>
+    <th>Total Price</th>
+  </tr>";
 
-echo "[";
-
+echo $html1;
 /*
  * This line below takes all of the data from the line_item_table query and echos it in json for so that you can use it for the report
  */
-
+$i=0;
 while($row = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_ASSOC))
 {
-    $tempObj->id = $row['Order_ID'];
-    $tempObj->line_item = $row['Line_Item'];
-    $tempObj->contract = $row['Contract_Number'];
-    $tempObj->name = $row['Item_Name'];
-    $tempObj->description = $row['Item_Description'];
-    $tempObj->quantity = $row['Item_Quantity'];
-    $tempObj->itemPrice = $row['Item_Price'];
-    $tempObj->itemTotal = $row['Total_Price'];
+    $id = $row['Order_ID'];
+    $line_item = $row['Line_Item'];
+    $contract = $row['Contract_Number'];
+    $name = $row['Item_Name'];
+    $description = $row['Item_Description'];
+    $quantity = $row['Item_Quantity'];
+    $itemPrice = $row['Item_Price'];
+    $itemTotal = $row['Total_Price'];
 
-    $myJSON = json_encode($tempObj);
-    echo $myJSON;
-    echo ",";
+    $vendorTotal += $itemTotal;
+
+    echo "<tr><td>$line_item</td>";
+    echo "<td>$contract</td>";
+    echo "<td>$name</td>";
+    echo "<td>$description</td>";
+    echo "<td>$quantity</td>";
+    echo "<td>$itemPrice</td>";
+    echo "<td>$itemTotal</td></tr>";
 }
 
-echo $myJSON;
-echo "]";
+echo "</table> 
+      </div> 
+      <div id='endInfo'>
+      <h3>Total spent by $vendorName between $orderDate1 and $orderDate2 is: $$vendorTotal</h3>
+      </div>
+      <form action='../Front%20End/public_html/tabs.html'>
+      <input type='submit' value='Return Home'>
+      </form>
+      <p>
+      <input type='button' value='Create PDF' id='btPrint' onclick='createPDF()'/>
+      </p>
+      </body>
+      <script>
+        function createPDF() 
+        {
+            var tabInfo = document.getElementById('info').innerHTML
+            var sTable = document.getElementById('tab').innerHTML;            
+            var endinfo = document.getElementById('endInfo').innerHTML;
+            var style = '<style>';
+            style = style + 'table {width: 100%;font: 17px Calibri;}';
+            style = style + 'table, th, td {border: solid 1px #DDD; border-collapse: collapse;';
+            style = style + 'padding: 2px 3px;text-align: center;}';
+            style = style + '</style>';
+
+            // CREATE A WINDOW OBJECT.
+            var win = window.open('', '', 'height=700,width=700');
+
+            win.document.write('<html><head>');
+            win.document.write('<title>Report</title>');   // <title> FOR PDF HEADER.
+            win.document.write(style);          // ADD STYLE INSIDE THE HEAD TAG.
+            win.document.write('</head>');
+            win.document.write('<body>');
+            win.document.write('<h3>');
+            win.document.write(tabInfo);
+            win.document.write('</h3>');
+            win.document.write(sTable);         // THE TABLE CONTENTS INSIDE THE BODY TAG.
+            win.document.write('<h3>');
+            win.document.write(endinfo);
+            win.document.write('</h3>');
+            win.document.write('</body></html>');
+
+            win.document.close(); 	// CLOSE THE CURRENT WINDOW.
+
+            win.print();    // PRINT THE CONTENTS.
+        }
+       </script>
+       </html>";
+
 
 sqlsrv_free_stmt($stmt);
+
+
+
+
+
+
+
+

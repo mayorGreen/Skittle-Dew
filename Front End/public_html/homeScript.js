@@ -172,6 +172,7 @@ function onVSelect(where) {
         var orderInfo = document.getElementById("formInfo");
 
         createCookie("vID", document.getElementById("vID").value, "0.25");
+        createCookie("vName", vName.value, "0.25");
         createCookie("date1", document.getElementById("date1").value, "0.25");
         createCookie("date2", document.getElementById("date2").value, "0.25");
 
@@ -196,7 +197,7 @@ function onVSelect(where) {
                 oDropdown.appendChild(element); 
             } */
 
-            orderInfo.visibility = "visible";
+            //orderInfo.visibility = "visible";
         }, true);
     }
 }
