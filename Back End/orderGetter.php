@@ -8,17 +8,17 @@ $conn = sqlsrv_connect($serverName, $connectionInfo);
 if (!$conn) {
     die(print_r(sqlsrv_errors(), true));
 }
-
+$contract = $_POST["conSelect"];
 $vendorID = $_COOKIE["vID"];
 $vendorName = $_COOKIE["vName"];
 $orderDate1 = $_COOKIE["date1"];
 $orderDate2 = $_COOKIE["date2"];
 $vendorTotal = 0.0;
 
+//SQL for all orders
 $sql = "SELECT Order_ID FROM Order_Table WHERE Vendor_ID = ? AND Order_Date Between ? AND ? ";
 $params = array($vendorID,$orderDate1,$orderDate2);
 
-//echo var_dump($params);
 
 $stmt = sqlsrv_query($conn, $sql, $params);
 
@@ -36,11 +36,23 @@ while($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
 {
     $id2 = $row['Order_ID'];
 }
+//SQL for contract orders
+$sql1 = "Select * FROM Line_Item_Table WHERE Order_ID = ? AND Contract_Number != 0";
 
+//SQL for non-contract orders
+$sql3 = "Select * FROM Line_Item_Table WHERE Order_ID = ? AND Contract_Number = 0";
+
+//SQL for all orders
 $sql2 = "Select * FROM Line_Item_Table WHERE Order_ID = ?";
 $params2 = array($id2);
 
-$stmt2 = sqlsrv_query($conn, $sql2, $params2);
+if($contract == "Contract")
+{
+    $stmt2 = sqlsrv_query($conn, $sql1, $params2);
+}elseif($contract == "Non-Contract")
+{
+    $stmt2 = sqlsrv_query($conn, $sql3, $params2);
+}else $stmt2 = sqlsrv_query($conn, $sql2, $params2);
 
 if (!$stmt2) {
     die(print_r(sqlsrv_errors(), true));

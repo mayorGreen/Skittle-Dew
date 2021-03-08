@@ -42,6 +42,18 @@
         </div>
         <div id="editOrder" class="tabcontent">
             <h2>Edit Existing Order</h2>
+            <form id="editOrders" method="POST" action="../../Back%20End/orderGetter.php">
+            <label for="orderDate">Order Date:</label>
+            <input id="orderDate" type="date" name="date">
+            <p>*Please choose the date before and after the date of the order you would like to edit</p>
+            <br>
+            <label for="editVSelect">Select a Vendor: </label>
+            <select class="form-control" id="editVSelect" onchange="onVSelect('edit')"></select>
+            <br>
+            <br>
+            <input type="submit" name="editSubmit" value="Get Report">
+            <p id="editWarn" style="color: #ff0000; visibility: hidden"></p>
+            </form>
         </div>
 
         <div
@@ -129,22 +141,30 @@
             </form>
         </div>
         <div id="createReports" class="tabcontent">
-            <h2>Generate Reports</h2>
-            <form id="reportCreate" method="POST" action="../../Back%20End/orderGetter.php"> <!--action="path to relevant script" onsubmit="return variables">-->
+            <h2>Vendor Purchase Reports</h2>
+            <form id="reportCreate" method="POST" action="../../Back%20End/orderGetter.php" onsubmit="return conSelect"> <!--action="path to relevant script" onsubmit="return variables">-->
                 <label for="date1">From:</label>
                 <input id="date1" type="date" name="date1">
                 <label for="date2">To:</label>
                 <input id="date2" type="date" name="date2">
+                <p>* If for all orders on a specific date select the day before and the day after</p>
                 <br>
                 <label for="reportVSelect">Select a Vendor: </label>
                 <select class="form-control" id="reportVSelect" onchange="onVSelect('report')"></select>
                 <br>
+                <label for="contract">Select contract option</label>
+                <select from="contract" id="contract" name="conSelect">
+                    <option value="NIL" selected = "selected"> </option>
+                    <option value="All Orders">Contract</option>
+                    <option value="Non-Contract">Non-Contract</option>
+                    <option value="All Orders">All Orders</option>
+                </select>
                 <br>
                 <input type="submit" name="reportSubmit" value="Get Report">
                 <p id="reportWarn" style="color: #ff0000; visibility: hidden"></p> <!--TODO: add js validation rules for reportCreate form-->
                 <p id=formInfo style="visibility: hidden;"></p>
             </form>
-            
+
         </div>
         <script>
             document.getElementById("default").click();

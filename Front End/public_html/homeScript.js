@@ -18,7 +18,7 @@ function openTab(event, tabName) {
     document.getElementById(tabName).style.display = "block";
     event.currentTarget.className += "active";
 
-    if (tabName == "addOrder" || tabName == "createReports") {
+    if (tabName == "addOrder" || tabName == "createReports" || tabName == "editOrder") {
         getVendors(tabName, sessionStorage.getItem("savedVendor"));
         if(tabName == "createReports") {
             var toDate = document.getElementById("date2");
@@ -81,6 +81,9 @@ function getVendors(tName, setTo = null) {
     }
     else if (tName == "createReports") {
         var ven = document.getElementById("reportVSelect");
+    }else if (tName == "editOrder")
+    {
+        var ven = document.getElementById("editVSelect");
     }
     else {
         console.log("Something's gone horribly wrong");
@@ -127,6 +130,10 @@ function onVSelect(where) {
             var vendor = document.getElementById("reportVSelect");
             var form = document.getElementById("reportCreate");
             break;
+        case "edit":
+            var vendor = document.getElementById("editVSelect");
+            var form = document.getElementById("editOrders");
+            break;
         default:
             console.log("something's gone horribly wrong (onVSelect)");
     }
@@ -168,37 +175,14 @@ function onVSelect(where) {
         getItems();
     }
 
+
     if (where == "report") {
-        var orderInfo = document.getElementById("formInfo");
+        //var orderInfo = document.getElementById("formInfo");
 
         createCookie("vID", document.getElementById("vID").value, "0.25");
         createCookie("vName", vName.value, "0.25");
         createCookie("date1", document.getElementById("date1").value, "0.25");
         createCookie("date2", document.getElementById("date2").value, "0.25");
-
-        returnAjax('../../Back End/orderGetter.php', function(data) {
-            console.log(data);
-            orderInfo.textContent = data;
-            /*
-            for (var i = 0; i < data.length; i++) { // may need to make that length -1 because it likes to act up
-                orders.push([data[i].name, data[i].id]);
-            }
-
-            console.log(orders);
-
-            for (var i = 0; i < orders.length; i++) {
-                var name = orders[i][0];
-                var oID = orders[i][1];
-                var element = document.createElement("option");
-                element.textContent = name;
-                element.name = "orderName";
-                element.value = oID;
-
-                oDropdown.appendChild(element); 
-            } */
-
-            //orderInfo.visibility = "visible";
-        }, true);
     }
 }
 
