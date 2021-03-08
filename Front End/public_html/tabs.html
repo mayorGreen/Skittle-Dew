@@ -142,7 +142,7 @@
         </div>
         <div id="createReports" class="tabcontent">
             <h2>Vendor Purchase Reports</h2>
-            <form id="reportCreate" method="POST" action="../../Back%20End/orderGetter.php" onsubmit="return conSelect"> <!--action="path to relevant script" onsubmit="return variables">-->
+            <form id="reportCreate" method="POST" action="../../Back%20End/orderGetter.php" onsubmit="saveCookies()"> <!--action="path to relevant script" onsubmit="return variables">-->
                 <label for="date1">From:</label>
                 <input id="date1" type="date" name="date1">
                 <label for="date2">To:</label>
@@ -155,7 +155,7 @@
                 <label for="contract">Select contract option</label>
                 <select from="contract" id="contract" name="conSelect">
                     <option value="NIL" selected = "selected"> </option>
-                    <option value="All Orders">Contract</option>
+                    <option value="Contract">Contract</option>
                     <option value="Non-Contract">Non-Contract</option>
                     <option value="All Orders">All Orders</option>
                 </select>

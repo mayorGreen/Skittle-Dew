@@ -8,7 +8,7 @@ $conn = sqlsrv_connect($serverName, $connectionInfo);
 if (!$conn) {
     die(print_r(sqlsrv_errors(), true));
 }
-$contract = $_POST["conSelect"];
+$contract = $_COOKIE["conSelect"];
 $vendorID = $_COOKIE["vID"];
 $vendorName = $_COOKIE["vName"];
 $orderDate1 = $_COOKIE["date1"];

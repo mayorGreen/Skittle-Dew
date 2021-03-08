@@ -174,16 +174,14 @@ function onVSelect(where) {
         itemDiv.appendChild(header);
         getItems();
     }
+}
 
-
-    if (where == "report") {
-        //var orderInfo = document.getElementById("formInfo");
-
-        createCookie("vID", document.getElementById("vID").value, "0.25");
-        createCookie("vName", vName.value, "0.25");
-        createCookie("date1", document.getElementById("date1").value, "0.25");
-        createCookie("date2", document.getElementById("date2").value, "0.25");
-    }
+function saveCookies() {
+    createCookie("vID", document.getElementById("vID").value, "0.25");
+    createCookie("vName", vName.value, "0.25");
+    createCookie("date1", document.getElementById("date1").value, "0.25");
+    createCookie("date2", document.getElementById("date2").value, "0.25");
+    createCookie("conSelect", document.getElementById("contract").value, "0.25");
 }
 
 function fillReport(){
