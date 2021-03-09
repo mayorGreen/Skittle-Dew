@@ -26,7 +26,7 @@
 
         <div id="addOrder" class="tabcontent">
             <h2>Add Order</h2>
-            <form id="oCreate" method="POST" action="../../Back%20End/addOrder.php" onsubmit="return vID, uLogin, oName, oDate, oComplete, oVoid, totalCost, notes">
+            <form id="oCreate" method="POST" action="../../Back%20End/addOrder.php" onsubmit="return vID, uLogin, oDate, oComplete, oVoid, totalCost, notes">
                 <label for="vendSelect">Select a Vendor: </label>
                 <select class="form-control" id="vendSelect" onchange="onVSelect('order')"></select>
                 <br>
@@ -48,6 +48,18 @@
                 <br>
                 <br>
                 <button id="editOrders" onclick="editOrders()">Confirm Order ID</button>
+            <form style="display:none" id="orderEdit" method="POST" action="../../Back%20End/updateOrder.php" onsubmit="return euLogin, eoDate, eoComplete, eoVoid, etotalCost, enote">
+                <br>
+                <div id="editInfoDiv" visibility="invisible">
+                </div>
+                <br>
+                <!--Items-->
+                <div id="editItemDiv">
+                </div>
+                <br>
+                <div id="editButtonsDiv" visibility="invisible">
+                </div>
+            </form>
                 <p id="editOWarn" style="color: #ff0000; visibility: hidden"></p>
         </div>
 

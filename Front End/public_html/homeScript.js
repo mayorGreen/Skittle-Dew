@@ -178,23 +178,175 @@ function saveCookies() {
 function editOrders()
 {
     createCookie("orderID",document.getElementById("orderID").value, "0.25");
-    console.log(document.getElementById("orderID").value);
     var orders = [];
     returnAjax("../../Back End/editOrder.php", function(data) {
         //console.log(data); // debug
-        for (var i = 0; i < data.length-1; i++) {
-            orders.push([data[i].userLogin, data[i].orderDate, data[i].orderComplete, data[i].orderVoid, data[i].totalPrice, data[i].notes,
-            data[i].lineItem, data[i].contract, data[i].itemName, data[i].itemQuantity, data[i].itemPrice, data[i].itemTotal]);
+        for (var i = 1; i < data.length-1; i++) {
+            orders.push([data[i].userLogin, data[i].orderDate, data[i].orderComplete, data[i].orderVoid, data[i].totalPrice, data[i].notes,data[i].lineItem,
+            data[i].contract, data[i].itemName, data[i].itemDescription, data[i].itemQuantity, data[i].itemPrice, data[i].itemTotal]);
+            userName.value = data[i].userLogin;
+            orderDate.value = data[i].orderDate;
+            if(data[i].orderComplete === 1){orderComplete.checked = true; }
+            if(data[i].orderVoid === 1){orderVoid.checked = true;}
+            notes.value = data[i].notes;
+            totalCost.value = data[i].totalPrice;
         }
-        console.log(orders);
-        console.log(orders.length);
+        for(var j = 0; j <orders.length; j++)
+        {
+            newDiv = document.createElement("div");
+
+            var lineItem = document.createElement("input");
+            lineItem.type = "number";
+            lineItem.value = orders[j][6];
+            lineItem.name = "eitems[]lineItem";
+            lineItem.style.display = "none";
+
+            var contractNumber = document.createElement("input");
+            contractNumber.type = "number";
+            contractNumber.value = orders[j][7];
+            contractNumber.placeholder = "Contract Number";
+            contractNumber.name = "eitems[]cNumber";
+
+            var itemName = document.createElement("input");
+            itemName.type = "text";
+            itemName.value = orders[j][8];
+            itemName.placeholder = "Item Name";
+            itemName.name = "eitems[]iName";
+
+            var desc = document.createElement("input");
+            desc.type = "text";
+            desc.value = orders[j][9];
+            desc.placeholder = "Item Description";
+            desc.name = "eitems[]oDescription";
+
+            var quantity = document.createElement("input");
+            quantity.id = "quantity";
+            quantity.type = "number";
+            quantity.step = "1";
+            quantity.value = orders[j][10];
+            quantity.min = "1";
+            quantity.placeholder = "Quantity";
+            quantity.name = "eitems[]oQuantity";
+            quantity.oninput = function() {eitemTotal(), eorderTotal()};
+
+            var price = document.createElement("input");
+            price.id = "price";
+            price.value = orders[j][11];
+            price.type = "number";
+            price.min = "1";
+            price.step = ".01";
+            price.placeholder = "Price";
+            price.name = "eitems[]uPrice";
+            price.oninput = function() {eitemTotal(), eorderTotal()};
+
+            var totalPrice = document.createElement("input");
+            totalPrice.id = "totalPrice";
+            totalPrice.value = orders[j][12];
+            totalPrice.type = "number";
+            totalPrice.step = ".01"
+            totalPrice.placeholder = "Total Price";
+            totalPrice.name = "eitems[]tPrice";
+
+            newDiv.appendChild(lineItem);
+            newDiv.appendChild(contractNumber);
+            newDiv.appendChild(itemName);
+            newDiv.appendChild(desc);
+            newDiv.appendChild(quantity);
+            newDiv.appendChild(price);
+            newDiv.appendChild(totalPrice);
+
+            newDiv.appendChild(document.createElement("br"));
+
+            editItemDiv.append(newDiv);
+            editItemDiv.style.visibility = "visible";
+        }
     }, true);
+
+    var form = document.getElementById("orderEdit");
+    form.style.display = "block";
+
+    var editInfoDiv = document.getElementById("editInfoDiv");
+    var editItemDiv = document.getElementById("editItemDiv");
+
+    if (editInfoDiv.visibility != "visible") {
+        var userName = document.createElement("input");
+        userName.type = "text";
+        userName.placeholder = "Username";
+        userName.id = "user_name";
+        userName.name = "euLogin";
+
+        var utc = new Date().toJSON().slice(0,10);
+
+        var orderDate = document.createElement("input");
+        orderDate.type = "date";
+        orderDate.value = utc;
+        orderDate.id = "date"
+        orderDate.name = "eoDate";
+
+        var orderComplete = document.createElement("input");
+        orderComplete.type = "checkbox";
+        orderComplete.id = "order_complete";
+        orderComplete.name = "eoComplete";
+
+        var orderVoid = document.createElement("input");
+        orderVoid.type = "checkbox";
+        orderVoid.id = "order_void";
+        orderVoid.name = "eoVoid";
+
+        var orderLabel = document.createElement("span");
+        orderLabel.textContent = " Order Complete: "
+
+        var voidLabel = document.createElement("span");
+        voidLabel.textContent = " Order Void: "
+
+        var notes = document.createElement("input");
+        notes.type = "text";
+        notes.placeholder = "Notes";
+        notes.name = "enote";
+
+        editInfoDiv.appendChild(userName);
+        editInfoDiv.appendChild(orderDate);
+        editInfoDiv.appendChild(orderLabel);
+        editInfoDiv.appendChild(orderComplete);
+        editInfoDiv.appendChild(voidLabel);
+        editInfoDiv.appendChild(orderVoid);
+        editInfoDiv.appendChild(notes);
+
+        editInfoDiv.visibility = "visible";
+    }
+
+    var editButtonsDiv = document.getElementById("editButtonsDiv");
+
+    if (editButtonsDiv.visibility != "visible") {
+
+        var costHeader = document.createElement("h3");
+        costHeader.textContent = "Order Total: ";
+
+        var totalCost = document.createElement("input");
+        totalCost.type = "number";
+        totalCost.id = "etotalCost";
+        totalCost.step = ".01";
+        totalCost.placeholder = "Order Total";
+        totalCost.name = "etotalCost";
+
+        var finalizeButton = document.createElement("input");
+        finalizeButton.type = "submit";
+        finalizeButton.value = "Finalize Item Selection";
+        finalizeButton.name = "submit";
+
+        editButtonsDiv.append(costHeader);
+        editButtonsDiv.append(totalCost);
+        editButtonsDiv.append(document.createElement("br"));
+        editButtonsDiv.append(document.createElement("br"));
+        editButtonsDiv.append(finalizeButton);
+
+        editButtonsDiv.visibility = "visible";
+    }
 }
 
 function editVendors()
 {
     createCookie("vendorID",document.getElementById("vendorID").value, "0.25");
-    console.log(document.getElementById("vendorID").value);
     var vendors = [];
     returnAjax("../../Back End/editVendor.php", function(data) {
         //console.log(data); // debug
@@ -208,14 +360,43 @@ function editVendors()
             document.getElementById("evendPhone").value = data[i].vendorPhone;
             document.getElementById("evendEmail").value = data[i].vendorEmail;
         }
-        console.log(vendors);
-        console.log(vendors.length);
 
     }, true);
-    console.log(vendors[0])
     var form = document.getElementById("vendEdit");
 
     form.style.display = "block";
+}
+
+function eitemTotal()
+{
+    var price = document.getElementsByName('eitems[]uPrice');
+    var quantity = document.getElementsByName('eitems[]oQuantity');
+    var total_Price = 0;
+
+    for (var i = 0; i < price.length; i++) {
+        var a = price[i].value;
+        var b = quantity[i].value;
+        total_Price = parseFloat(a)*parseFloat(b);
+
+        var divobj = document.getElementsByName('eitems[]tPrice');
+        divobj[i].value = total_Price.toFixed(2);
+    }
+}
+
+function eorderTotal()
+{
+    var price = document.getElementsByName('eitems[]tPrice');
+    var quantity = document.getElementsByName('eitems[]oQuantity');
+    var total_Price = 0;
+
+    for (var i = 0; i < price.length; i++) {
+        var a = price[i].value;
+        //var b = quantity[i].value;
+        total_Price += (parseFloat(a));
+
+        var divobj = document.getElementById('etotalCost');
+        divobj.value = total_Price.toFixed(2);
+    }
 }
 
 
@@ -323,11 +504,11 @@ function getItems() {
         userName.name = "uLogin";
 
 
-        var utc = new Date().toJSON().slice(0,16);
+        var utc = new Date().toJSON().slice(0,10);
         console.log(utc)
 
         var orderDate = document.createElement("input");
-        orderDate.type = "datetime-local";
+        orderDate.type = "date";
         orderDate.value = utc;
         orderDate.id = "date"
         orderDate.name = "oDate";

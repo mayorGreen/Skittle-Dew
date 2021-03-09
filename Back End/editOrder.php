@@ -26,10 +26,10 @@ echo "[";
 while($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
 {
     $tempObj->userLogin = $row['User_Login'];
-    $tempObj->orderDate = $row['Order_Date'];
+    $tempObj->orderDate = date("Y-m-d", strtotime($row['Order_Date']));
     $tempObj->orderComplete = $row['Order_Complete'];
     $tempObj->orderVoid = $row['Order_Void'];
-    $tempObj->totalPrice = $row['Total_Price'];
+    $tempObj->totalPrice = number_format($row['Total_Price'],2);
     $tempObj->notes = $row['Notes'];
 
     $myJSON = json_encode($tempObj);
@@ -43,8 +43,8 @@ while($row = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_ASSOC))
     $tempObj->itemName = $row['Item_Name'];
     $tempObj->itemDescription = $row['Item_Description'];
     $tempObj->itemQuantity = $row['Item_Quantity'];
-    $tempObj->itemPrice = $row['Item_Price'];
-    $tempObj->itemTotal = $row['Total_Price'];
+    $tempObj->itemPrice = number_format($row['Item_Price'],2);
+    $tempObj->itemTotal = number_format($row['Total_Price'],2);
 
     $myJSON = json_encode($tempObj);
     echo $myJSON;
