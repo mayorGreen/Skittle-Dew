@@ -11,11 +11,11 @@ h1, h2, label {
        
 .tab button {
     background-color: inherit;
-    float: left;
+    float: inside;
     border: none;
     outline: none;
     cursor: pointer;
-    padding: 14px 16px;
+    padding: 20px 20px;
     transition: 0.2s;
 }
 

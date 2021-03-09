@@ -185,7 +185,7 @@ function editOrders()
             orders.push([data[i].userLogin, data[i].orderDate, data[i].orderComplete, data[i].orderVoid, data[i].totalPrice, data[i].notes,data[i].lineItem,
             data[i].contract, data[i].itemName, data[i].itemDescription, data[i].itemQuantity, data[i].itemPrice, data[i].itemTotal]);
             userName.value = data[i].userLogin;
-            orderDate.value = data[i].orderDate;
+            //orderDate.value = data[i].orderDate;
             if(data[i].orderComplete === 1){orderComplete.checked = true; }
             if(data[i].orderVoid === 1){orderVoid.checked = true;}
             notes.value = data[i].notes;
@@ -305,7 +305,6 @@ function editOrders()
         notes.name = "enote";
 
         editInfoDiv.appendChild(userName);
-        editInfoDiv.appendChild(orderDate);
         editInfoDiv.appendChild(orderLabel);
         editInfoDiv.appendChild(orderComplete);
         editInfoDiv.appendChild(voidLabel);
