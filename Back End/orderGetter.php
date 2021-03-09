@@ -29,10 +29,10 @@ if (!$stmt) {
 
 /*
  * We are querying the database for the order total price, and the order void and complete status.
- * We may not need these and may just wish to total the entirety of the orders made by with the vendor within the date period.
+ * We may not need these and may just wish to total the entirety of the orders made by the vendor within the date period.
  * If we do not need these they can be taken out or left in in case we decide to use them later.
- *
  */
+
 //SQL for contract orders
 $sql1 = "Select * FROM Line_Item_Table WHERE Order_ID in (?";
 
@@ -135,8 +135,8 @@ while($row = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_ASSOC))
     $name = $row['Item_Name'];
     $description = $row['Item_Description'];
     $quantity = $row['Item_Quantity'];
-    $itemPrice = $row['Item_Price'];
-    $itemTotal = $row['Total_Price'];
+    $itemPrice = number_format($row['Item_Price'],2);
+    $itemTotal = number_format($row['Total_Price'],2);
 
     if($contract == 0)
     {

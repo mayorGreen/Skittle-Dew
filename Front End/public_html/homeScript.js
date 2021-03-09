@@ -18,7 +18,7 @@ function openTab(event, tabName) {
     document.getElementById(tabName).style.display = "block";
     event.currentTarget.className += "active";
 
-    if (tabName == "addOrder" || tabName == "createReports" || tabName == "editOrder") {
+    if (tabName == "addOrder" || tabName == "createReports") {
         getVendors(tabName, sessionStorage.getItem("savedVendor"));
         if(tabName == "createReports") {
             var toDate = document.getElementById("date2");
@@ -81,9 +81,6 @@ function getVendors(tName, setTo = null) {
     }
     else if (tName == "createReports") {
         var ven = document.getElementById("reportVSelect");
-    }else if (tName == "editOrder")
-    {
-        var ven = document.getElementById("editVSelect");
     }
     else {
         console.log("Something's gone horribly wrong");
@@ -118,8 +115,6 @@ function getVendors(tName, setTo = null) {
     }, true);
 }
 
-
-
 function onVSelect(where) {
     switch(where) {
         case "order":
@@ -129,10 +124,6 @@ function onVSelect(where) {
         case "report":
             var vendor = document.getElementById("reportVSelect");
             var form = document.getElementById("reportCreate");
-            break;
-        case "edit":
-            var vendor = document.getElementById("editVSelect");
-            var form = document.getElementById("editOrders");
             break;
         default:
             console.log("something's gone horribly wrong (onVSelect)");
@@ -184,8 +175,47 @@ function saveCookies() {
     createCookie("conSelect", document.getElementById("contract").value, "0.25");
 }
 
-function fillReport(){
+function editOrders()
+{
+    createCookie("orderID",document.getElementById("orderID").value, "0.25");
+    console.log(document.getElementById("orderID").value);
+    var orders = [];
+    returnAjax("../../Back End/editOrder.php", function(data) {
+        //console.log(data); // debug
+        for (var i = 0; i < data.length-1; i++) {
+            orders.push([data[i].userLogin, data[i].orderDate, data[i].orderComplete, data[i].orderVoid, data[i].totalPrice, data[i].notes,
+            data[i].lineItem, data[i].contract, data[i].itemName, data[i].itemQuantity, data[i].itemPrice, data[i].itemTotal]);
+        }
+        console.log(orders);
+        console.log(orders.length);
+    }, true);
+}
 
+function editVendors()
+{
+    createCookie("vendorID",document.getElementById("vendorID").value, "0.25");
+    console.log(document.getElementById("vendorID").value);
+    var vendors = [];
+    returnAjax("../../Back End/editVendor.php", function(data) {
+        //console.log(data); // debug
+        for (var i = 0; i < data.length-1; i++) {
+            vendors.push([data[i].vendorName, data[i].vendorAddress, data[i].vendorCity, data[i].vendorState, data[i].vendorZip, data[i].vendorPhone, data[i].vendorEmail]);
+            document.getElementById("evendName").value = data[i].vendorName;
+            document.getElementById("evendAddress").value = data[i].vendorAddress;
+            document.getElementById("evendCity").value = data[i].vendorCity;
+            document.getElementById("evendState").value = data[i].vendorState;
+            document.getElementById("evendZip").value = data[i].vendorZip;
+            document.getElementById("evendPhone").value = data[i].vendorPhone;
+            document.getElementById("evendEmail").value = data[i].vendorEmail;
+        }
+        console.log(vendors);
+        console.log(vendors.length);
+
+    }, true);
+    console.log(vendors[0])
+    var form = document.getElementById("vendEdit");
+
+    form.style.display = "block";
 }
 
 
@@ -481,6 +511,6 @@ function newVendor(vName, vMail, vPhone, vAddress, vCity, vState, vZip) {
     }
 
     console.log("All tests were succesful!");
-    console.log(vName.value, vcontract.value, vMail.value, vPhone.value, vAddress.value, vCity.value, vState.value, vZip.value);
+    console.log(vName.value, vMail.value, vPhone.value, vAddress.value, vCity.value, vState.value, vZip.value);
     return true;
 }
