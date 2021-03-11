@@ -477,10 +477,12 @@ function getItems() {
             totalPrice.placeholder = "Total Price";
             totalPrice.name = "items[]tPrice";
 
+            var space = document.createElement("br");
+
             var removeItem = document.createElement("button");
             removeItem.type = "button";
             removeItem.textContent = "Remove Item";
-            removeItem.onclick = function () {deleteItem(contractNumber,itemName,desc,quantity,price,totalPrice, removeItem), itemTotal(), orderTotal()};
+            removeItem.onclick = function () {deleteItem(contractNumber,itemName,desc,quantity,price,totalPrice, removeItem, space), itemTotal(), orderTotal()};
 
             newDiv.appendChild(contractNumber);
             newDiv.appendChild(itemName);
@@ -489,8 +491,7 @@ function getItems() {
             newDiv.appendChild(price);
             newDiv.appendChild(totalPrice);
             newDiv.appendChild(removeItem);
-
-            newDiv.appendChild(document.createElement("br"));
+            newDiv.appendChild(space);
 
             itemDiv.append(newDiv);
             itemDiv.style.visibility = "visible";
@@ -610,7 +611,7 @@ function getItems() {
     }
 }
 
-function deleteItem(contract, itemname, itemdesc,qty,price, total, remove)
+function deleteItem(contract, itemname, itemdesc,qty,price, total, remove, space)
 {
     contract.remove();
     itemname.remove();
@@ -619,6 +620,7 @@ function deleteItem(contract, itemname, itemdesc,qty,price, total, remove)
     price.remove();
     total.remove();
     remove.remove();
+    space.remove();
 }
 
 //hides and un-hides the email input
