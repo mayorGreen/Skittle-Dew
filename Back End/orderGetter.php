@@ -145,10 +145,18 @@ while ($row = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_ASSOC))
     {
         $contract = "Non-Contract";
     }
-    $vendorTotal += doubleval($itemTotal);
+    $vendorTotal += $itemTotal;
+
+    //Converts numbers to number format for better readability
+    $itemTotal = number_format($itemTotal,2);
+    $itemPrice = number_format($itemPrice,2);
+
     array_push($data2, $id,$line_item,$contract,$name,$description,$quantity,$itemPrice,$itemTotal);
     $numItems ++;
-}
+}//end while
+
+//converts Total to a number format
+$vendorTotal = number_format($vendorTotal,2);
 
 //loops through both arrays and creates a table based on the orders and the items contained in the orders
 for($i = 0; $i<count($params2);$i++)
@@ -180,30 +188,30 @@ for($i = 0; $i<count($params2);$i++)
             <th>Total Price</th>
            </tr>";
 
-        for($h = 0;$h<=count($data2);$h++)
-        {
+    for($h = 0;$h<=count($data2);$h++)
+    {
 
-            if(strcmp($params2[$i], $data2[$h])==0)
-            {
-                echo "<tr><td>$data2[$f]</td>";
-                $f++;
-                echo "<td>$data2[$f]</td>";
-                $f++;
-                echo "<td>$data2[$f]</td>";
-                $f++;
-                echo "<td>$data2[$f]</td>";
-                $f++;
-                echo "<td>$data2[$f]</td>";
-                $f++;
-                echo "<td>$data2[$f]</td>";
-                $f++;
-                echo "<td>$data2[$f]</td></tr>";
-                $f++;
-                $f++;
-            }
-        }
-        echo "<tr><td colspan='7' height='5px'></td></tr>";
-}
+        if(strcmp($params2[$i], $data2[$h])==0)
+        {
+            echo "<tr><td>$data2[$f]</td>";
+            $f++;
+            echo "<td>$data2[$f]</td>";
+            $f++;
+            echo "<td>$data2[$f]</td>";
+            $f++;
+            echo "<td>$data2[$f]</td>";
+            $f++;
+            echo "<td>$data2[$f]</td>";
+            $f++;
+            echo "<td>$data2[$f]</td>";
+            $f++;
+            echo "<td>$data2[$f]</td></tr>";
+            $f++;
+            $f++;
+        }//end if
+    }//end for
+    echo "<tr><td colspan='7' height='5px'></td></tr>";
+}//end for
 
 echo " <tfoot>
         <tr>
