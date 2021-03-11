@@ -477,12 +477,18 @@ function getItems() {
             totalPrice.placeholder = "Total Price";
             totalPrice.name = "items[]tPrice";
 
+            var removeItem = document.createElement("button");
+            removeItem.type = "button";
+            removeItem.textContent = "Remove Item";
+            removeItem.onclick = function () {deleteItem(contractNumber,itemName,desc,quantity,price,totalPrice, removeItem), itemTotal(), orderTotal()};
+
             newDiv.appendChild(contractNumber);
             newDiv.appendChild(itemName);
             newDiv.appendChild(desc);
             newDiv.appendChild(quantity);
             newDiv.appendChild(price);
             newDiv.appendChild(totalPrice);
+            newDiv.appendChild(removeItem);
 
             newDiv.appendChild(document.createElement("br"));
 
@@ -561,6 +567,23 @@ function getItems() {
         totalCost.placeholder = "Order Total";
         totalCost.name = "totalCost";
 
+        var checkCount = 2;
+        var email = document.createElement("input");
+        email.type = "checkbox";
+        email.id = "email";
+        email.name = "email";
+        email.onclick = function () {enteremail(checkCount++)};
+
+        var enterEmail = document.createElement("input");
+        enterEmail.type = "email";
+        enterEmail.id = "enterEmail";
+        enterEmail.name = "enterEmail";
+        enterEmail.placeholder = "Enter Email";
+        enterEmail.style.display = "none";
+
+        var emailLabel = document.createElement("span");
+        emailLabel.textContent = " I would like to receive an email confirming my order. ";
+
         var addItemButton = document.createElement("button");
         addItemButton.type = "button";
         addItemButton.textContent = "Click to add new item";
@@ -575,11 +598,38 @@ function getItems() {
         buttonsDiv.append(totalCost);
         buttonsDiv.append(document.createElement("br"));
         buttonsDiv.append(document.createElement("br"));
+        buttonsDiv.append(emailLabel);
+        buttonsDiv.append(email);
+        buttonsDiv.append(enterEmail);
+        buttonsDiv.append(document.createElement("br"));
+        buttonsDiv.append(document.createElement("br"));
         buttonsDiv.append(addItemButton);
         buttonsDiv.append(finalizeButton);
 
         buttonsDiv.visibility = "visible";
     }
+}
+
+function deleteItem(contract, itemname, itemdesc,qty,price, total, remove)
+{
+    contract.remove();
+    itemname.remove();
+    itemdesc.remove();
+    qty.remove();
+    price.remove();
+    total.remove();
+    remove.remove();
+}
+
+//hides and un-hides the email input
+function enteremail(checkCount)
+{
+    //var div = document.getElementById("buttonsDiv");
+    var enterEmail = document.getElementById("enterEmail");
+    if(checkCount%2===0)
+    {
+        enterEmail.style.display = "block";
+    }else if(checkCount%2!==0){enterEmail.style.display = "none";}
 }
 
 
