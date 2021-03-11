@@ -18,7 +18,7 @@ $orderDate2 = date("Y-m-d", strtotime("+1 day", strtotime($_COOKIE["date2"])));
 $vendorTotal = 0.0;
 
 //SQL for all orders
-$sql = "SELECT Order_ID FROM Order_Table WHERE Vendor_ID = ? AND Order_Date Between ? AND ? ";
+$sql = "SELECT Order_ID, User_Login, Order_Date, Order_Complete, Order_Void FROM Order_Table WHERE Vendor_ID = ? AND Order_Date Between ? AND ? ";
 $params = array($vendorID,$orderDate1,$orderDate2);
 
 $stmt = sqlsrv_query($conn, $sql, $params);
@@ -46,15 +46,25 @@ $sql2 = "Select * FROM Line_Item_Table WHERE Order_ID in (?";
 $a = ",?";
 $params2 = array();
 $numRows = 0;
+$data = array();
+
 
 //Appends order ids to params2 and adds an extra variable to each sql statement
 //very sloppy usage, but it works
 while($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
 {
     $id2 = $row['Order_ID'];
+    $login = $row['User_Login'];
+    $date = $row['Order_Date'];
+    $date = $date->format('m-d-Y');
+    $complete = $row['Order_Complete'];
+    $void = $row['Order_Void'];
+
+    array_push($data, $id2, $login, $date, $complete, $void);
     array_push($params2, $id2);
     $numRows ++;
 }
+
 for($i = 1; $i <$numRows; $i++)
 {
     //SQL for contract orders
@@ -66,7 +76,6 @@ for($i = 1; $i <$numRows; $i++)
     //SQL for all orders
     $sql2 .= $a;
 }
-
 //Returns reports based on whether an item has a contract or not
 if(strcmp($contract, "Contract") == 0)
 {
@@ -90,7 +99,7 @@ if (!$stmt2) {
 $orderDate1 = date('F d, Y', strtotime("+1 day", strtotime($orderDate1)));
 $orderDate2 = date('F d, Y', strtotime("-1 day", strtotime($orderDate2)));
 
-
+//begining of html data to create a table
 $html1 = "<html> 
     <head> 
         <link rel='icon' href='../Front%20End/public_html/favicon.ico'>
@@ -111,23 +120,17 @@ $html1 = "<html>
     <h3 align='center'>For orders between: $orderDate1 and $orderDate2 </h3>
 </div>
 <div id='tab'>
-<table align='center'>
-  <tr>
-    <th>Line Item</th>
-    <th>Contract</th>
-    <th>Item Name</th>
-    <th>Item Description</th>
-    <th>Qty</th>
-    <th>Unit Price</th>
-    <th>Total Price</th>
-  </tr>";
+<table align='center'>";
 
 echo $html1;
-/*
- * This line below takes all of the data from the line_item_table query and echos it in json for so that you can use it for the report
- */
-$i=0;
-while($row = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_ASSOC))
+
+$j = 1;
+$f = 1;
+$numItems = 0;
+$data2 = array();
+
+//adds all rows in the line item table to an array
+while ($row = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_ASSOC))
 {
     $id = $row['Order_ID'];
     $line_item = $row['Line_Item'];
@@ -135,23 +138,71 @@ while($row = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_ASSOC))
     $name = $row['Item_Name'];
     $description = $row['Item_Description'];
     $quantity = $row['Item_Quantity'];
-    $itemPrice = number_format($row['Item_Price'],2);
-    $itemTotal = number_format($row['Total_Price'],2);
+    $itemPrice = doubleval($row['Item_Price']);
+    $itemTotal = doubleval($row['Total_Price']);
 
-    if($contract == 0)
+    if ($contract == 0)
     {
         $contract = "Non-Contract";
     }
+    $vendorTotal += doubleval($itemTotal);
+    array_push($data2, $id,$line_item,$contract,$name,$description,$quantity,$itemPrice,$itemTotal);
+    $numItems ++;
+}
 
-    $vendorTotal += $itemTotal;
+//loops through both arrays and creates a table based on the orders and the items contained in the orders
+for($i = 0; $i<count($params2);$i++)
+{
+    echo" <tr>
+            <th colspan='2'>Ordered By</th>
+            <th>Order Date</th>
+            <th colspan='2'>Order Complete</th>
+            <th colspan='2'>Order Void</th>
+         </tr>";
+    echo "<tr><td colspan='2'>$data[$j]</td>";
+    $j++;
+    echo "<td>$data[$j]</td>";
+    $j++;
+    if($data[$j] == 0){$data[$j] = "No";}else $data[$j] = "Yes";
+    echo "<td colspan='2'>$data[$j]</td>";
+    $j++;
+    if($data[$j] == 0){$data[$j] = "No";}else $data[$j] = "Yes";
+    echo "<td colspan='2'>$data[$j]</td>";
+    $j++;
+    $j++;
+    echo "<tr>
+            <th>Line Item</th>
+            <th>Contract</th>
+            <th>Item Name</th>
+            <th>Item Description</th>
+            <th>Qty</th>
+            <th>Unit Price</th>
+            <th>Total Price</th>
+           </tr>";
 
-    echo "<tr><td>$line_item</td>";
-    echo "<td>$contract</td>";
-    echo "<td>$name</td>";
-    echo "<td>$description</td>";
-    echo "<td>$quantity</td>";
-    echo "<td>$itemPrice</td>";
-    echo "<td>$itemTotal</td></tr>";
+        for($h = 0;$h<=count($data2);$h++)
+        {
+
+            if(strcmp($params2[$i], $data2[$h])==0)
+            {
+                echo "<tr><td>$data2[$f]</td>";
+                $f++;
+                echo "<td>$data2[$f]</td>";
+                $f++;
+                echo "<td>$data2[$f]</td>";
+                $f++;
+                echo "<td>$data2[$f]</td>";
+                $f++;
+                echo "<td>$data2[$f]</td>";
+                $f++;
+                echo "<td>$data2[$f]</td>";
+                $f++;
+                echo "<td>$data2[$f]</td></tr>";
+                $f++;
+                $f++;
+            }
+        }
+        echo "<tr><td colspan='7' height='5px'></td></tr>";
 }
 
 echo " <tfoot>
@@ -189,7 +240,7 @@ echo " <tfoot>
             var win = window.open('', '', 'height=700,width=700');
 
             win.document.write('<html><head>');
-            win.document.write('<title>Report</title>');   // <title> FOR PDF HEADER.
+            win.document.write('<title>Buchanan County</title>');   // <title> FOR PDF HEADER.
             win.document.write(style);          // ADD STYLE INSIDE THE HEAD TAG.
             win.document.write('</head>');
             win.document.write('<body>');

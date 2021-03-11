@@ -1,4 +1,4 @@
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
     <!--Copyright (C) Skittle-Dew 2020. All Rights Reserved.-->
     <head>
         <meta charset="UTF-8">
@@ -23,6 +23,7 @@
 
         <div id="welcomePage" class="tabcontent">
             <h2>Welcome to the Buchanan County Purchase Order System</h2>
+            <h3></h3>
         </div>
 
         <div id="addOrder" class="tabcontent">
@@ -230,7 +231,8 @@
             <label for="vendZip">Zip Code: </label>
             <input id="vendZip" type="text" name="vzip">
             <br>
-            <input type="submit" name="submit" value="Submit">
+            <p></p> <!-- I Know this paragraph has no point, but I was unable to get the spacing I wanted-->
+            <input id="submit" type="submit" name="submit" value="Submit">
             <p id="avWarn" style="color: #ff0000; visibility: hidden"></p>
             </form>
         </div>
@@ -252,6 +254,7 @@
                     <option value="Non-Contract">Non-Contract</option>
                     <option value="All Orders">All Orders</option>
                 </select>
+                <br>
                 <br>
                 <input type="submit" name="reportSubmit" value="Get Report">
                 <p id="reportWarn" style="color: #ff0000; visibility: hidden"></p> <!--TODO: add js validation rules for reportCreate form-->
