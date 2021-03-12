@@ -164,7 +164,62 @@ function onVSelect(where) {
 
         itemDiv.appendChild(header);
         getItems();
+
+        //can be implemented later on once it is working
+        threeMonthPeriod();
+
     }
+}
+
+function threeMonthPeriod()
+{
+    createCookie("vID", document.getElementById("vID").value, "o.25");
+
+    var months = [];
+    var today = new Date();
+    var total = 0.0;
+    var resetDate = new Date();
+    var dropOff = 0.0;
+
+    returnAjax("../../Back End/3monthPeriodGetter.php", function(data) {
+        //console.log(data); // debug
+        for (var i = 0; i < data.length; i++) {
+            months.push([data[i].date, data[i].total]);
+        }
+        months.pop();
+
+        //initial date
+        var initDate = new Date(months[0][0]);
+        var time = Math.abs(initDate.getTime() - today.getTime());
+        var diff = Math.ceil(time / (1000 * 3600 * 24));
+
+        for(var i =0; i<months.length; i++)
+        {
+            var newDate = new Date(months[i][0]);
+            var timeDiff = Math.abs(newDate.getTime() - today.getTime());
+            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+            if(diffDays<90)
+            {
+                total += parseFloat(months[i][1]);
+            }
+            if(diffDays>60)
+            {
+                dropOff += parseFloat(months[i][0]);
+            }
+        }
+        var month = newDate.getMonth();
+        resetDate.setMonth( month+1, 1);
+
+        if(total > 6000.00)
+        {
+            alert("This Vendor reached their contract spending limit. The rolling period resets: "+resetDate.toJSON().slice(0,10)+" and $"+dropOff.toFixed(2)+" is gained back to spend.");
+        }else if (total <= 5500.00 && total >=4000.00)
+        {
+            alert("This vendor has almost reached their spending limit with $ "+(6000.00-parseFloat(total)).toFixed(2)+" left to spend. The rolling period resets: "+resetDate.toJSON().slice(0,10)+" and $"+dropOff.toFixed(2)+" is gained back to spend.");
+        }else alert("This vendor has $"+(6000.00-parseFloat(total)).toFixed(2)+" left to spend. The rolling period resets: "+resetDate.toJSON().slice(0,10)+" and $"+dropOff.toFixed(2)+" is gained back to spend.");
+
+    }, true);
 }
 
 function saveCookies() {

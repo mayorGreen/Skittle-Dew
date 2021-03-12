@@ -28,9 +28,8 @@ if (isset($_POST['submit']))
     $notes = strval($_POST[note]);
     $email = strval($_POST[enterEmail]);
 
-    var_dump($email);
-
     //code to hopefully send an email after an order has been placed
+    /*
     $to = $email; // this is your Email address
     $from = "jtrickel@missouriwestern.edu"; // this is the sender's Email address
     $subject = "Order Confirmation";
@@ -39,7 +38,7 @@ if (isset($_POST['submit']))
     $headers = "From:" . $from;
     $headers2 = "From:" . $to;
     mail($to,$subject,$message,$headers);
-
+    */
 
     if($orderComplete == TRUE) $orderComplete = 1;
     else $orderComplete = 0;
