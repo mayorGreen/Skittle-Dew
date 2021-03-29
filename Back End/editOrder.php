@@ -11,11 +11,11 @@ $orderID = $_COOKIE['orderID'];
 //7 items for orders
 
 $sql = "SELECT User_Login, Order_Date, Order_Complete, Order_Void, Total_Price, Notes FROM Order_Table WHERE Order_ID = ?";
-$sql2 = "SELECT * FROM Line_Item_Table WHERE Order_ID = ?";
+//$sql2 = "SELECT * FROM Line_Item_Table WHERE Order_ID = ?";
 $params = array($orderID);
 
 $stmt = sqlsrv_query($conn, $sql, $params);
-$stmt2 = sqlsrv_query($conn, $sql2, $params);
+//$stmt2 = sqlsrv_query($conn, $sql2, $params);
 
 if (!$stmt) {
     die(print_r(sqlsrv_errors(), true));
@@ -36,6 +36,8 @@ while($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
     echo $myJSON;
     echo ",";
 }
+
+/*
 while($row = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_ASSOC))
 {
     $tempObj->lineItem = $row['Line_Item'];
@@ -50,6 +52,7 @@ while($row = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_ASSOC))
     echo $myJSON;
     echo ",";
 }
+*/
 
 echo $myJSON;
 echo "]";

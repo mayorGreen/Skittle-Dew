@@ -20,8 +20,14 @@ if (isset($_POST['submit']))
     //If orderComplete is yes then orderVoid must be no and vice versus
     $orderComplete = boolval($_POST[eoComplete]);
     $order_void = boolval($_POST[eoVoid]);
+    $order_Received = $_POST[eoDate];
+    var_dump($order_Received);
+
+
+    /*
     $totalPrice = doubleval($_POST[etotalCost]);
     $notes = strval($_POST[enote]);
+    */
 
     if($orderComplete == TRUE) $orderComplete = 1;
     else $orderComplete = 0;
@@ -31,7 +37,7 @@ if (isset($_POST['submit']))
 
     //Sql for Order_Table
     $sql = "UPDATE Order_Table SET Order_Complete = '$orderComplete', Order_Void = '$order_void',
-            Total_Price = '$totalPrice', Notes = '$notes' Where Order_ID = ?";
+            Order_Received_Date = '$order_Received' Where Order_ID = ?";
     $params = array($orderID);
 
     $query1 = sqlsrv_query($conn, $sql, $params);
@@ -40,6 +46,7 @@ if (isset($_POST['submit']))
         die(print_r(sqlsrv_errors(), true));
     }
 
+    /*
 
     //Select Order_ID from Order_Table
     $sql3 = "Select * From Order_Table where Order_ID = ?";
@@ -98,6 +105,7 @@ if (isset($_POST['submit']))
             die(print_r(sqlsrv_errors(), true));
         }
     }
+    */
 
     sqlsvr_close($conn);
 }

@@ -235,10 +235,13 @@ function editOrders()
     createCookie("orderID",document.getElementById("orderID").value, "0.25");
     var orders = [];
     returnAjax("../../Back End/editOrder.php", function(data) {
+        data.pop();
         //console.log(data); // debug
-        for (var i = 1; i < data.length-1; i++) {
-            orders.push([data[i].userLogin, data[i].orderDate, data[i].orderComplete, data[i].orderVoid, data[i].totalPrice, data[i].notes,data[i].lineItem,
-            data[i].contract, data[i].itemName, data[i].itemDescription, data[i].itemQuantity, data[i].itemPrice, data[i].itemTotal]);
+
+        for (var i = 0; i < data.length; i++)
+        {
+            orders.push([data[i].userLogin, data[i].orderDate, data[i].orderComplete, data[i].orderVoid, data[i].totalPrice, data[i].notes]);
+
             userName.value = data[i].userLogin;
             //orderDate.value = data[i].orderDate;
             if(data[i].orderComplete === 1){orderComplete.checked = true; }
@@ -246,6 +249,9 @@ function editOrders()
             notes.value = data[i].notes;
             totalCost.value = data[i].totalPrice;
         }
+
+        /*
+        //More unneeded code
         for(var j = 0; j <orders.length; j++)
         {
             newDiv = document.createElement("div");
@@ -302,26 +308,27 @@ function editOrders()
             totalPrice.placeholder = "Total Price";
             totalPrice.name = "eitems[]tPrice";
 
-            newDiv.appendChild(lineItem);
-            newDiv.appendChild(contractNumber);
-            newDiv.appendChild(itemName);
-            newDiv.appendChild(desc);
-            newDiv.appendChild(quantity);
-            newDiv.appendChild(price);
-            newDiv.appendChild(totalPrice);
+            //newDiv.appendChild(lineItem);
+            //newDiv.appendChild(contractNumber);
+           // newDiv.appendChild(itemName);
+           // newDiv.appendChild(desc);
+           // newDiv.appendChild(quantity);
+          //  newDiv.appendChild(price);
+          //  newDiv.appendChild(totalPrice);
 
-            newDiv.appendChild(document.createElement("br"));
+          //  newDiv.appendChild(document.createElement("br"));
 
-            editItemDiv.append(newDiv);
-            editItemDiv.style.visibility = "visible";
+           // editItemDiv.append(newDiv);
+           // editItemDiv.style.visibility = "visible";
         }
+       */
     }, true);
 
     var form = document.getElementById("orderEdit");
     form.style.display = "block";
 
     var editInfoDiv = document.getElementById("editInfoDiv");
-    var editItemDiv = document.getElementById("editItemDiv");
+    //var editItemDiv = document.getElementById("editItemDiv");
 
     if (editInfoDiv.visibility != "visible") {
         var userName = document.createElement("input");
@@ -330,13 +337,23 @@ function editOrders()
         userName.id = "user_name";
         userName.name = "euLogin";
 
-        var utc = new Date().toJSON().slice(0,10);
+        var date = new Date();
+        var day = date.getDate().toString();
+        var month = (date.getMonth()+1).toString();
+        if (day.length <= 1) {
+            day = "0" + day;
+        }
+        if (month.length <= 1) {
+            month = "0" + month;
+        }
+        // console.log(date.getFullYear() + '-' + month + '-' + day);
+        date = date.getFullYear() + '-' + month + '-' + day;
 
-        var orderDate = document.createElement("input");
-        orderDate.type = "date";
-        orderDate.value = utc;
-        orderDate.id = "date"
-        orderDate.name = "eoDate";
+        var orderReceivedDate = document.createElement("input");
+        orderReceivedDate.type = "date";
+        orderReceivedDate.value = date;
+        orderReceivedDate.id = "date";
+        orderReceivedDate.name = "eoDate";
 
         var orderComplete = document.createElement("input");
         orderComplete.type = "checkbox";
@@ -348,23 +365,40 @@ function editOrders()
         orderVoid.id = "order_void";
         orderVoid.name = "eoVoid";
 
+        var userLabel = document.createElement("span");
+        userLabel.textContent = " Username: "
+
         var orderLabel = document.createElement("span");
         orderLabel.textContent = " Order Complete: "
 
         var voidLabel = document.createElement("span");
         voidLabel.textContent = " Order Void: "
 
+        var receivedLabel = document.createElement("span");
+        receivedLabel.textContent = " Order Received Date: "
+
+        var noteLabel = document.createElement("span");
+        noteLabel.textContent = " Notes: "
+
         var notes = document.createElement("input");
         notes.type = "text";
         notes.placeholder = "Notes";
         notes.name = "enote";
 
-        editInfoDiv.appendChild(userName);
+        editInfoDiv.appendChild(userLabel);
+        editInfoDiv.appendChild(userName).readOnly = true;
+        editInfoDiv.appendChild(document.createElement("br"));
         editInfoDiv.appendChild(orderLabel);
         editInfoDiv.appendChild(orderComplete);
+        editInfoDiv.appendChild(document.createElement("br"));
         editInfoDiv.appendChild(voidLabel);
         editInfoDiv.appendChild(orderVoid);
-        editInfoDiv.appendChild(notes);
+        editInfoDiv.appendChild(document.createElement("br"));
+        editInfoDiv.appendChild(receivedLabel);
+        editInfoDiv.appendChild(orderReceivedDate);
+        editInfoDiv.appendChild(document.createElement("br"));
+        editInfoDiv.appendChild(noteLabel);
+        editInfoDiv.appendChild(notes).readOnly = true;
 
         editInfoDiv.visibility = "visible";
     }
@@ -379,13 +413,12 @@ function editOrders()
         var totalCost = document.createElement("input");
         totalCost.type = "number";
         totalCost.id = "etotalCost";
-        totalCost.step = ".01";
-        totalCost.placeholder = "Order Total";
+        totalCost.readOnly = true;
         totalCost.name = "etotalCost";
 
         var finalizeButton = document.createElement("input");
         finalizeButton.type = "submit";
-        finalizeButton.value = "Finalize Item Selection";
+        finalizeButton.value = "Finalize Order";
         finalizeButton.name = "submit";
 
         editButtonsDiv.append(costHeader);
@@ -420,7 +453,8 @@ function editVendors()
 
     form.style.display = "block";
 }
-
+/*
+// More code that is likely not needed
 function eitemTotal()
 {
     var price = document.getElementsByName('eitems[]uPrice');
@@ -452,7 +486,7 @@ function eorderTotal()
         divobj.value = total_Price.toFixed(2);
     }
 }
-
+*/
 
 function itemTotal()
 {
@@ -564,16 +598,29 @@ function getItems() {
         userName.id = "user_name";
         userName.name = "uLogin";
 
-
-        var utc = new Date().toJSON().slice(0,10);
-        console.log(utc)
+        var date = new Date();
+        var day = date.getDate().toString();
+        var month = (date.getMonth()+1).toString();
+        if (day.length <= 1) {
+            day = "0" + day;
+        }
+        if (month.length <= 1) {
+            month = "0" + month;
+        }
+        // console.log(date.getFullYear() + '-' + month + '-' + day);
+        date = date.getFullYear() + '-' + month + '-' + day;
 
         var orderDate = document.createElement("input");
         orderDate.type = "date";
-        orderDate.value = utc;
+        orderDate.value = date;
         orderDate.id = "date"
         orderDate.name = "oDate";
 
+        /*
+        //We should not include these in the regular order page as they are being edited later.
+        //We are editing order to show that an order is void or complete and the date it was received.
+        //Therefore we no longer need this section of code.
+        //I did not remove it in case Josh would like it to be back in the code, but for now they are removed.
         var orderComplete = document.createElement("input");
         orderComplete.type = "checkbox";
         orderComplete.id = "order_complete";
@@ -589,7 +636,7 @@ function getItems() {
 
         var voidLabel = document.createElement("span");
         voidLabel.textContent = " Order Void: "
-
+        */
 
         var notes = document.createElement("input");
         notes.type = "text";
@@ -598,10 +645,10 @@ function getItems() {
 
         infoDiv.appendChild(userName);
         infoDiv.appendChild(orderDate);
-        infoDiv.appendChild(orderLabel);
-        infoDiv.appendChild(orderComplete);
-        infoDiv.appendChild(voidLabel);
-        infoDiv.appendChild(orderVoid);
+       // infoDiv.appendChild(orderLabel);
+       // infoDiv.appendChild(orderComplete);
+       // infoDiv.appendChild(voidLabel);
+       // infoDiv.appendChild(orderVoid);
         infoDiv.appendChild(notes);
 
 

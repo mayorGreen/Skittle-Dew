@@ -22,8 +22,8 @@ if (isset($_POST['submit']))
 
     //represented by a bit (1 or 0) and should be identified as a yes or no drop down.
     //If orderComplete is yes then orderVoid must be no and vice versus
-    $orderComplete = boolval($_POST[oComplete]);
-    $order_void = boolval($_POST[oVoid]);
+    $orderComplete = 0;
+    $order_void = 0;
     $totalPrice = doubleval($_POST[totalCost]);
     $notes = strval($_POST[note]);
     $email = strval($_POST[enterEmail]);
@@ -40,11 +40,13 @@ if (isset($_POST['submit']))
     mail($to,$subject,$message,$headers);
     */
 
+    /*
     if($orderComplete == TRUE) $orderComplete = 1;
     else $orderComplete = 0;
 
     if($order_void == TRUE) $order_void = 1;
     else $order_void = 0;
+    */
 
 
     //Sql for Order_Table
