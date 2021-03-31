@@ -235,12 +235,13 @@ function editOrders()
     createCookie("orderID",document.getElementById("orderID").value, "0.25");
     var orders = [];
     returnAjax("../../Back End/editOrder.php", function(data) {
-        data.pop();
+        //data.pop();
         //console.log(data); // debug
 
-        for (var i = 0; i < data.length; i++)
+        for (var i = 0; i < data.length-1; i++)
         {
-            orders.push([data[i].userLogin, data[i].orderDate, data[i].orderComplete, data[i].orderVoid, data[i].totalPrice, data[i].notes]);
+            orders.push([data[i].userLogin, data[i].orderDate, data[i].orderComplete, data[i].orderVoid, data[i].totalPrice, data[i].notes,data[i].lineItem,
+                data[i].contract, data[i].itemName, data[i].itemDescription, data[i].itemQuantity, data[i].itemPrice, data[i].itemTotal]);
 
             userName.value = data[i].userLogin;
             //orderDate.value = data[i].orderDate;
@@ -250,9 +251,9 @@ function editOrders()
             totalCost.value = data[i].totalPrice;
         }
 
-        /*
+
         //More unneeded code
-        for(var j = 0; j <orders.length; j++)
+        for(var j = 1; j <orders.length; j++)
         {
             newDiv = document.createElement("div");
 
@@ -308,27 +309,27 @@ function editOrders()
             totalPrice.placeholder = "Total Price";
             totalPrice.name = "eitems[]tPrice";
 
-            //newDiv.appendChild(lineItem);
-            //newDiv.appendChild(contractNumber);
-           // newDiv.appendChild(itemName);
-           // newDiv.appendChild(desc);
-           // newDiv.appendChild(quantity);
-          //  newDiv.appendChild(price);
-          //  newDiv.appendChild(totalPrice);
+            newDiv.appendChild(lineItem).readOnly = true;
+            newDiv.appendChild(contractNumber).readOnly = true;
+            newDiv.appendChild(itemName).readOnly = true;
+            newDiv.appendChild(desc).readOnly = true;
+            newDiv.appendChild(quantity).readOnly = true;
+            newDiv.appendChild(price).readOnly = true;
+            newDiv.appendChild(totalPrice).readOnly = true;
 
-          //  newDiv.appendChild(document.createElement("br"));
+            newDiv.appendChild(document.createElement("br"));
 
-           // editItemDiv.append(newDiv);
-           // editItemDiv.style.visibility = "visible";
+            editItemDiv.append(newDiv);
+            editItemDiv.style.visibility = "visible";
         }
-       */
+
     }, true);
 
     var form = document.getElementById("orderEdit");
     form.style.display = "block";
 
     var editInfoDiv = document.getElementById("editInfoDiv");
-    //var editItemDiv = document.getElementById("editItemDiv");
+    var editItemDiv = document.getElementById("editItemDiv");
 
     if (editInfoDiv.visibility != "visible") {
         var userName = document.createElement("input");
@@ -385,9 +386,13 @@ function editOrders()
         notes.placeholder = "Notes";
         notes.name = "enote";
 
-        editInfoDiv.appendChild(userLabel);
-        editInfoDiv.appendChild(userName).readOnly = true;
-        editInfoDiv.appendChild(document.createElement("br"));
+        var editable = document.createElement("p");
+        editable.textContent = "Editable Items:";
+
+        var nonEditable = document.createElement("p");
+        nonEditable.textContent = "Non-editable items: ";
+
+        editInfoDiv.appendChild(editable);
         editInfoDiv.appendChild(orderLabel);
         editInfoDiv.appendChild(orderComplete);
         editInfoDiv.appendChild(document.createElement("br"));
@@ -396,6 +401,9 @@ function editOrders()
         editInfoDiv.appendChild(document.createElement("br"));
         editInfoDiv.appendChild(receivedLabel);
         editInfoDiv.appendChild(orderReceivedDate);
+        editInfoDiv.appendChild(nonEditable);
+        editInfoDiv.appendChild(userLabel);
+        editInfoDiv.appendChild(userName).readOnly = true;
         editInfoDiv.appendChild(document.createElement("br"));
         editInfoDiv.appendChild(noteLabel);
         editInfoDiv.appendChild(notes).readOnly = true;
