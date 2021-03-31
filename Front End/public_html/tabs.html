@@ -72,7 +72,7 @@
             <br>
             <br>
             <button id="editVendors" onclick="editVendors()">Confirm Vendor ID</button>
-            <form style="display:none" id = "vendEdit" method = "POST" action = "../../Back%20End/updateVendor.php" onsubmit="return newVendor(evname,evmail, evphone, evaddress, evcity, evstate, evzip)">
+            <form style="display:none" id = "vendEdit" method = "POST" action = "../../Back%20End/updateVendor.php" onsubmit="return newVendor(evname, evmail, evphone, evaddress, evcity, evstate, evzip, evWarn)">
             <label for="vendName">Vendor Name: </label>
             <input id="evendName" type="text" name="evname">
             <br>
@@ -158,7 +158,7 @@
             <script type="text/javascript">
                 window.addEventListener('keydown',function(e){if(e.keyIdentifier=='U+000A'||e.keyIdentifier=='Enter'||e.keyCode==13){if(e.target.nodeName=='INPUT'&&e.target.type=='text'){e.preventDefault();return false;}}},true);
             </script>                
-            <form id = "vCreate" method = "POST" action = "../../Back%20End/addVendor.php" onsubmit="return newVendor(vname,vmail, vphone, vaddress, vcity, vstate, vzip)">
+            <form id = "vCreate" method = "POST" action = "../../Back%20End/addVendor.php" onsubmit="return newVendor(vname,vmail, vphone, vaddress, vcity, vstate, vzip, avWarn)">
             <label for="vendName">Vendor Name: </label>
             <input id="vendName" type="text" name="vname">
             <br>

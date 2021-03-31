@@ -756,8 +756,7 @@ function validateZip(zip) {
     }
 }
 
-function newVendor(vName, vMail, vPhone, vAddress, vCity, vState, vZip) {
-    var warn = document.getElementById("avWarn");
+function newVendor(vName, vMail, vPhone, vAddress, vCity, vState, vZip, warn) {
     warn.style.visibility = "hidden";
 
     validEmailSuffixes = [".com", ".net", ".gov", ".edu"]; // add more as nessesary
