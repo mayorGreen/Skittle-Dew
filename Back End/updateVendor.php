@@ -1,5 +1,5 @@
 <?php
-echo('<script type="text/javascript">alert("Vendor successfully updated!");location="../Front End/public_html/tabs.html";</script>');
+echo('<script type="text/javascript">alert("Vendor successfully updated!");location="../Buch_County/tabs.html";</script>');
 if(isset($_POST['submit']))
 {
     //Database connection script
@@ -15,19 +15,19 @@ if(isset($_POST['submit']))
 
     //Vendor Variables
     $vendorID = $_COOKIE[vendorID];
-    $name = strval($_POST[evname]);
-    $address = strval($_POST[evaddress]);
-    $city = strval($_POST[evcity]);
-    $state = strval($_POST[evstate]);
-    $zip = intval($_POST[evzip]);
-    $phone = intval($_POST[evphone]);
-    $email = strval($_POST[evmail]);
+    $name = strval($_POST['evname']);
+    $address = strval($_POST['evaddress']);
+    $city = strval($_POST['evcity']);
+    $state = strval($_POST['evstate']);
+    $zip = intval($_POST['evzip']);
+    $phone = intval($_POST['evphone']);
+    $email = strval($_POST['evmail']);
 
     //SQL to add the Vendor to the vendor_table
-    $sql = "UPDATE Vendor_Table SET Vendor_Name = '$name', Vendor_Address = '$address',
-            Vendor_City = '$city', Vendor_State = '$state', Vendor_Zip_Code = $zip, Vendor_Phone = $phone, Vendor_Email = '$email'
-            Where Vendor_ID = ?";
-    $params = array($vendorID);
+    $sql = "UPDATE Vendor_Table SET Vendor_Name = ?, Vendor_Address = ?,
+            Vendor_City = ?, Vendor_State = ?, Vendor_Zip_Code = ?, Vendor_Phone = ?, Vendor_Email = ?
+            WHERE Vendor_ID = ?;";
+    $params = array($name, $address, $city, $state, $zip, $phone, $email, $vendorID);
 
     $query = sqlsrv_query($conn,$sql,$params);
 
